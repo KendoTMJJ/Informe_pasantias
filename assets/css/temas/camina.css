@@ -41,6 +41,69 @@
 .hero--camina .boton--secundario { border-color: rgb(255 255 255 / 0.4); }
 .hero--camina .hero__globo { justify-self: end; width: 100%; max-width: 35rem; filter: drop-shadow(0 0 100px rgb(255 255 255 / 0.5)); }
 
+/* La ruta CAMINA: réplica de src/styles/home/methodology.css */
+.ruta { container-type: inline-size; padding: var(--sp-7) var(--sp-6) var(--sp-6); color: #ffffff; background: #2c56fc; border-radius: 24px; }
+.ruta__rotulo { display: inline-block; padding-bottom: var(--sp-2); font-size: var(--fs-sm); font-weight: 600; color: #b5d334; border-bottom: 2px solid #b5d334; }
+.ruta__nombre { margin: var(--sp-4) 0 var(--sp-8); font-size: var(--fs-3xl); font-weight: 800; line-height: 1.1; }
+.ruta__pasos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: var(--sp-8);
+  column-gap: var(--sp-4);
+  margin: 0;
+  padding: var(--sp-2) 0 0;
+  list-style: none;
+}
+.ruta__paso { display: flex; align-items: center; flex: 1; gap: var(--sp-2); min-width: 0; max-width: none; }
+.ruta__flecha { display: none; flex-shrink: 0; width: 1.25rem; height: 1.25rem; color: rgb(255 255 255 / 0.35); }
+.ruta__tarjeta {
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 13.75rem;
+  padding: 2.75rem var(--sp-3) var(--sp-4);
+  text-align: center;
+  color: #4b5563;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.1);
+  transition: transform var(--transicion);
+}
+.ruta__tarjeta:hover { transform: translateY(-4px); }
+.ruta__letra {
+  position: absolute;
+  top: -2.25rem;
+  left: 50%;
+  display: flex; align-items: center; justify-content: center;
+  width: 4.5rem; height: 4.5rem;
+  font-size: var(--fs-2xl); font-weight: 800; line-height: 1;
+  color: #2c56fc;
+  background: #b5d334;
+  border: 3px solid #2c56fc;
+  border-radius: 50%;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.18);
+  transform: translateX(-50%);
+  transition: background-color var(--transicion), color var(--transicion);
+}
+.ruta__tarjeta:hover .ruta__letra { color: var(--paso-texto); background: var(--paso); }
+.ruta__titulo { margin-top: var(--sp-3); font-weight: 800; color: #2c56fc; }
+.ruta__desc { font-size: var(--fs-xs); line-height: 1.6; }
+.ruta__cita { max-width: 50rem; margin: var(--sp-7) auto 0; font-size: var(--fs-lg); font-weight: 600; line-height: 1.5; text-align: center; }
+
+/* En fila con flechas solo cuando el contenedor tiene el ancho del sitio original */
+@container (min-width: 70rem) {
+  .ruta__pasos { display: flex; align-items: stretch; gap: var(--sp-2); }
+  .ruta__flecha { display: block; }
+}
+@container (max-width: 34rem) {
+  .ruta__pasos { grid-template-columns: minmax(0, 1fr); }
+}
+
 .tema-camina .capa--1 { background: #eef2ff; border-color: transparent; }
 .tema-camina .capa__nombre { text-align: center; }
 .tema-camina .capa { text-align: center; }

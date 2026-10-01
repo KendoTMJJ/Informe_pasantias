@@ -48,8 +48,6 @@
     nomina: { indice: 'En esta ficha', num: function (n) { return dos(n); }, teja: 'ancho-2', orden: 5 },
     mesas: { indice: 'En esta ficha', num: function (n) { return dos(n); }, teja: '', orden: 6 }
   };
-  // Temas cuyo héroe ya muestra la descripción del proyecto.
-  const HERO_CON_DESCRIPCION = ['camina', 'livinglab', 'nomina'];
   const TEMA_BASE = { indice: 'En esta ficha', num: function (n) { return dos(n); }, teja: '', orden: 99 };
 
   const EXTERNO = '<span class="sr-only"> (se abre en una pestaña nueva)</span>';
@@ -434,7 +432,6 @@
         '<img class="hero__logo" src="' + esc(ruta('assets/img/marcas/camina-logo-blanco.png', base)) + '" alt="Santoto CAMINA Living Lab">' +
         '<h1 class="sr-only">' + esc(p.nombre) + '</h1>' +
         '<p class="hero__lema">' + frases.map(function (f, i) { return '<span class="' + (i % 2 ? 'blanco' : 'lima') + '">' + esc(f) + '</span>'; }).join(' ') + '</p>' +
-        (tieneContenido(p.descripcion) ? '<p class="hero__bajada">' + esc(p.descripcion) + '</p>' : '') +
         datosHero(p) + botones(p, 'boton--principal', 'boton--secundario') + '</div>' +
         '<img class="hero__globo" src="' + esc(ruta('assets/img/marcas/camina-banner.png', base)) + '" alt="Ilustración del banner de CAMINA: el planeta rodeado de ciudad, naturaleza y ciencia"></div></div>';
     },
@@ -465,7 +462,6 @@
         '<img class="hero__logo" src="' + esc(ruta('assets/img/marcas/rally-living-lab-logo.png', base)) + '" alt="Universidad Santo Tomás Tunja y Santoto Camina Living Lab">' +
         '<p class="hero__rotulo">' + esc(rotuloProyecto(p)) + '</p><h1>' + esc(p.nombre) + '</h1>' +
         (tieneContenido(p.subtitulo) ? '<p class="hero__lema">' + esc(p.subtitulo) + '</p>' : '') +
-        (tieneContenido(p.descripcion) ? '<p class="hero__bajada">' + esc(p.descripcion) + '</p>' : '') +
         datosHero(p) + botones(p, 'boton--principal', 'boton--secundario', extra) + '</div>' +
         '<img class="hero__titulo-img" src="' + esc(ruta('assets/img/rally-living-lab/titulo-mapa-de-soluciones.svg', base)) + '" alt="Festival Santoto Camina Living Lab: Mapa de soluciones"></div></div>';
     },
@@ -500,7 +496,7 @@
         '<div class="contenedor hero__interior">' + migas(p, base) + '<div class="hero__centro">' +
         '<p class="hero__rotulo">' + esc(rotuloProyecto(p) + ' · ' + ((p.identidad || {}).etiqueta || '')) + '</p>' +
         '<div class="hero__marca"><img src="' + esc(ruta('assets/img/marcas/usta-escudo.webp', base)) + '" alt=""><div><h1>' + esc(p.nombre) + '</h1><p>Universidad Santo Tomás · Tunja</p></div></div>' +
-        (tieneContenido(p.descripcion) ? '<p class="hero__bajada">' + esc(p.descripcion) + '</p>' : '') +
+        (tieneContenido(p.subtitulo) ? '<p class="hero__bajada">' + esc(p.subtitulo) + '</p>' : '') +
         (des.length ? '<div class="hero__modulos">' + des.map(function (d, i) {
           return '<a href="#' + esc(d.id) + '">' + (iconos[i] || '') + '<strong>' + esc(d.modulo) + '</strong><span>' + esc(d.nombre) + '</span></a>';
         }).join('') + '</div>' : '') + datosHero(p) + botones(p, 'boton--principal', 'boton--secundario') + '</div></div>';
@@ -537,11 +533,32 @@
   function sub(titulo, cuerpo) { return cuerpo ? '<h3 class="sec__sub">' + esc(titulo) + '</h3>' + cuerpo : ''; }
 
   const SECCIONES = [
-    // Propósito y descripción (la descripción se omite si el héroe ya la muestra).
+    // Qué se hizo y por qué: lo primero de cada ficha.
     function (p, ctx) {
-      const enHero = HERO_CON_DESCRIPCION.indexOf((p.identidad || {}).tema) !== -1;
-      return seccion(ctx, 'proposito', enHero ? 'Propósito' : 'Propósito y descripción',
-        parrafos(p.proposito, 'sec__texto') + (enHero ? '' : parrafos(p.descripcion, 'sec__texto sec__suave')));
+      const hechos = conContenido(p.queSeHizo);
+      const que = parrafos(p.descripcion, 'sec__texto') + (hechos.length ? '<ul class="qpq__lista">' + hechos.map(function (h) {
+        return '<li>' + esc(h) + '</li>';
+      }).join('') + '</ul>' : '');
+      const porque = parrafos(p.proposito, 'sec__texto');
+      const bloques = (que ? '<div class="qpq__bloque qpq__bloque--que"><h3>Qué se hizo</h3>' + que + '</div>' : '') +
+        (porque ? '<div class="qpq__bloque qpq__bloque--porque"><h3>Por qué se hizo</h3>' + porque + '</div>' : '');
+      return seccion(ctx, 'que-y-por-que', 'Qué se hizo y por qué', bloques ? '<div class="qpq">' + bloques + '</div>' : '');
+    },
+    // Acróstico de la metodología (réplica de la sección "La ruta CAMINA" de camina-front).
+    function (p, ctx) {
+      const ac = (p.extras || {}).acrostico;
+      const pasos = ac ? conContenido(ac.pasos) : [];
+      if (!pasos.length) return '';
+      const tarjetas = pasos.map(function (x, i) {
+        return '<li class="ruta__paso" style="--paso:' + esc(x.color || '#b5d334') + ';--paso-texto:' + esc(x.colorTexto || '#ffffff') + '">' +
+          '<div class="ruta__tarjeta"><span class="ruta__letra" aria-hidden="true">' + esc(x.letra) + '</span>' +
+          '<p class="ruta__titulo"><span class="sr-only">' + esc(x.letra) + ' de </span>' + esc(x.titulo) + '</p><p class="ruta__desc">' + esc(x.descripcion) + '</p></div>' +
+          (i < pasos.length - 1 ? '<svg class="ruta__flecha" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '') + '</li>';
+      }).join('');
+      return seccion(ctx, 'metodologia', ac.titulo || 'Metodología',
+        (tieneContenido(ac.nota) ? '<p class="sec__texto sec__suave" style="margin-bottom:var(--sp-5)">' + esc(ac.nota) + '</p>' : '') +
+        '<div class="ruta"><p class="ruta__rotulo">' + esc(ac.rotulo || 'Metodología') + '</p><p class="ruta__nombre">' + esc(ac.nombre || ac.titulo || '') + '</p>' +
+        '<ol class="ruta__pasos">' + tarjetas + '</ol>' + (tieneContenido(ac.cita) ? '<p class="ruta__cita">' + esc(ac.cita) + '</p>' : '') + '</div>');
     },
     // Programas intervenidos (micrositios).
     function (p, ctx) {
@@ -564,9 +581,12 @@
       const s = conContenido(ex.sellos);
       if (!s.length) return '';
       const base = ctx.base;
-      return seccion(ctx, 'sellos', ex.tituloSellos || 'Sellos', '<ul class="sellos">' + s.map(function (x) {
-        return '<li class="sello">' + (x.img ? '<img src="' + esc(ruta(x.img, base)) + '" alt="" loading="lazy">' : '') + '<span>' + esc(x.nombre) + '</span></li>';
-      }).join('') + '</ul>');
+      return seccion(ctx, 'sellos', ex.tituloSellos || 'Sellos',
+        (tieneContenido(ex.notaSellos) ? '<p class="sec__texto sec__suave" style="margin-bottom:var(--sp-5)">' + esc(ex.notaSellos) + '</p>' : '') +
+        '<ul class="sellos">' + s.map(function (x) {
+          return '<li class="sello">' + (x.img ? '<img src="' + esc(ruta(x.img, base)) + '" alt="" loading="lazy">' : '') + '<span>' + esc(x.nombre) + '</span>' +
+            (tieneContenido(x.detalle) ? '<small class="sello__detalle">' + esc(x.detalle) + '</small>' : '') + '</li>';
+        }).join('') + '</ul>');
     },
     // Comparativa de identidades (Rally Living Lab).
     function (p, ctx) {

@@ -921,6 +921,27 @@ body[class*="tema-"] { background: var(--p-fondo); }
 .sec__nota { font-size: var(--fs-sm); }
 .sec__sub { margin: var(--sp-6) 0 var(--sp-3); font-family: var(--p-fuente-titulos); font-size: var(--fs-md); font-weight: 700; color: var(--p-titulo); letter-spacing: 0; }
 
+/* Qué se hizo y por qué (apertura de cada ficha) */
+.qpq { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: var(--sp-5); align-items: start; }
+.qpq__bloque { padding: var(--sp-6); background: var(--p-superficie); border: var(--linea) solid var(--p-borde); border-radius: var(--p-radio); }
+.qpq__bloque h3 { margin-bottom: var(--sp-4); font-family: var(--p-fuente-titulos); font-size: var(--fs-lg); font-weight: var(--p-peso-titulo); color: var(--p-titulo); letter-spacing: -0.01em; }
+.qpq__bloque--porque { color: var(--p-sobre-primario); background: var(--p-primario); border-color: var(--p-primario); }
+.qpq__bloque--porque h3 { color: inherit; }
+.qpq__bloque--porque .sec__texto + .sec__texto { margin-top: var(--sp-4); }
+.qpq__lista { display: grid; gap: var(--sp-3); margin: var(--sp-5) 0 0; padding: 0; list-style: none; }
+.qpq__lista li { position: relative; padding-left: var(--sp-6); line-height: 1.55; }
+.qpq__lista li::before {
+  content: "✓";
+  content: "✓" / "";
+  position: absolute; left: 0; top: 0.05em;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.35rem; height: 1.35rem;
+  font-size: var(--fs-xs); font-weight: 800;
+  color: var(--p-sobre-acento); background: var(--p-acento);
+  border-radius: 50%;
+}
+@media (max-width: 64rem) { .qpq { grid-template-columns: minmax(0, 1fr); } }
+
 .bloques-texto { display: grid; gap: var(--sp-5); }
 .bloques-texto h3 { font-family: var(--p-fuente-titulos); font-size: var(--fs-md); font-weight: 700; color: var(--p-titulo); letter-spacing: 0; margin-bottom: var(--sp-2); }
 
@@ -1029,6 +1050,7 @@ body[class*="tema-"] { background: var(--p-fondo); }
 .sello:nth-child(even) img { transform: rotate(5deg); }
 .sello:hover img { transform: rotate(0) scale(1.06); }
 .sello span { font-family: var(--p-fuente-titulos); font-weight: 700; font-size: var(--fs-sm); color: var(--p-titulo); }
+.sello__detalle { font-size: var(--fs-xs); line-height: var(--lh-compacto); color: var(--p-suave); }
 
 /* Grupos de módulos (ReservaLab) */
 .grupos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: var(--sp-4); }
