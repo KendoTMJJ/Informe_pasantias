@@ -1,0 +1,63 @@
+/* Tema Rally Living Lab — estado actual del repositorio del rally (rama
+   rally/camina, src/styles/theme.css): la identidad de CAMINA aplicada al
+   rally. Azul #2C56FC, lima #B5D334, Nunito, formas redondas, sellos en
+   roseta por etapa del método y el título del festival. */
+
+.tema-livinglab {
+  --p-fondo: #ffffff;
+  --p-superficie: #f9fafb;
+  --p-superficie-2: #eef2ff;
+  --p-texto: #121212;
+  --p-suave: #4b5563;
+  --p-titulo: #121212;
+  --p-primario: #2c56fc;
+  --p-sobre-primario: #ffffff;
+  --p-acento: #b5d334;
+  --p-sobre-acento: #121212;
+  --p-oscuro: #121212;
+  --p-oscuro-2: #1f2937;
+  --p-etiqueta-oscuro: #b5d334;
+  --p-suave-oscuro: #9ca3af;
+  --p-num: #2c56fc;
+  --p-borde: #e5e7eb;
+  --p-radio: 24px;
+  --p-radio-chip: 999px;
+  --p-radio-capa: 999px;
+  --p-fuente: var(--f-nunito);
+  --p-fuente-titulos: var(--f-nunito);
+  --p-peso-titulo: 900;
+}
+
+.hero--livinglab { color: #121212; background: #ffffff; border-bottom: 1px solid #e5e7eb; }
+.hero--livinglab .migas { color: #4b5563; }
+.hero__circulo { position: absolute; right: -6rem; top: 50%; width: 40rem; height: 40rem; border-radius: 50%; background: #2c56fc; transform: translateY(-50%); }
+.hero__circulo--lima { right: 30rem; top: auto; bottom: 3rem; width: 7rem; height: 7rem; background: #b5d334; transform: none; }
+.hero--livinglab .hero__logo { width: 100%; max-width: 29rem; margin-bottom: var(--sp-6); }
+.hero--livinglab .hero__rotulo { color: #121212; background: #b5d334; }
+.hero--livinglab h1 { color: #2c56fc; font-weight: 900; }
+.hero--livinglab .hero__lema { margin-top: var(--sp-4); font-weight: 800; font-size: var(--fs-xl); }
+.hero--livinglab .hero__bajada { color: #4b5563; }
+.hero--livinglab .hero__datos > div { background: #eef2ff; }
+.hero--livinglab .hero__datos dt { color: #2c56fc; }
+.hero--livinglab .boton--principal { color: #ffffff; background: #2c56fc; }
+.hero--livinglab .boton--secundario { color: #2c56fc; }
+.hero--livinglab .hero__titulo-img {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 34rem;
+  padding: var(--sp-5);
+  background: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0 24px 60px rgb(18 18 18 / 0.25);
+  transform: rotate(-3deg);
+}
+
+.tema-livinglab .sello { border-radius: 999px; padding: var(--sp-5); }
+.tema-livinglab .sello img { transform: none; }
+.tema-livinglab .indice__marca { border-color: #b5d334; background: #b5d334; color: #121212; }
+
+@media (max-width: 56rem) {
+  .hero__circulo { width: 22rem; height: 22rem; top: auto; bottom: -10rem; }
+  .hero--livinglab .hero__titulo-img { justify-self: center; }
+}

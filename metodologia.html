@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Metodología · Informe de pasantía</title>
+  <meta name="description" content="Marco teórico y metodológico común a los desarrollos de la pasantía: ciclo de vida, Scrum, GitHub, Git, arquitectura cliente-servidor y levantamiento de requerimientos.">
+  <link rel="icon" href="./assets/img/marcas/usta-escudo.webp" type="image/webp">
+  <link rel="stylesheet" href="./assets/css/estilos.css">
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body data-pagina="metodologia" data-seccion="metodologia" data-raiz="./">
+  <a class="salto" href="#contenido">Saltar al contenido</a>
+
+  <header class="barra">
+    <div class="barra__interior">
+      <a class="marca" href="./index.html">
+        <img src="./assets/img/marcas/usta-escudo.webp" alt="Escudo de la Universidad Santo Tomás">
+        <span>Informe de pasantía</span>
+      </a>
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
+        <span class="menu-boton__icono" aria-hidden="true"></span>Menú
+      </button>
+      <nav id="menu-principal" class="menu" aria-label="Principal">
+        <ul>
+          <li><a href="./index.html" data-seccion="inicio">Inicio</a></li>
+          <li><a href="./index.html#proyectos" data-seccion="proyectos">Proyectos</a></li>
+          <li><a href="./metodologia.html" data-seccion="metodologia">Metodología</a></li>
+          <li><a href="./cronograma.html" data-seccion="cronograma">Cronograma</a></li>
+          <li><a href="./conclusiones.html" data-seccion="conclusiones">Conclusiones</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <header class="cabecera-oscura">
+      <div class="cabecera-oscura__aro" aria-hidden="true"></div>
+      <div class="contenedor">
+        <p class="antetitulo">Marco de referencia</p>
+        <h1>Metodología</h1>
+        <p class="cabecera-oscura__entradilla">Fundamentos teóricos y prácticas de trabajo comunes a los frentes de la pasantía. Las decisiones particulares de cada desarrollo —arquitectura, ramas, despliegue— se documentan en su ficha.</p>
+      </div>
+    </header>
+    <div class="contenedor ficha__cuerpo con-indice">
+      <aside class="indice-caja" aria-label="Secciones de la metodología"></aside>
+      <div class="con-indice__cuerpo">
+          <section class="sec prosa" id="ciclo-vida" aria-labelledby="ciclo-vida-titulo">
+            <h2 class="sec__titulo" id="ciclo-vida-titulo">Ciclo de vida del software aplicado</h2>
+            <p>El ciclo de vida del software describe las etapas por las que pasa un producto desde que surge una necesidad hasta que deja de operar. En el modelo en cascada esas etapas se recorren una sola vez y en orden estricto; cada una debe cerrarse antes de iniciar la siguiente. Ese esquema funciona cuando los requisitos son estables, pero en una dependencia que atiende solicitudes de muchas unidades académicas los requisitos cambian con frecuencia y la retroalimentación temprana vale más que un plan cerrado.</p>
+            <p>Por eso el trabajo se aproximó a un <strong>modelo iterativo e incremental</strong>: cada iteración atraviesa análisis, diseño, construcción, verificación y entrega sobre un conjunto acotado de funcionalidades, y el resultado se presenta a quien lo solicitó antes de continuar. Así se obtiene una versión utilizable pronto y los cambios se absorben sin rehacer lo construido.</p>
+            <dl class="lista-definiciones">
+              <dt>Levantamiento y análisis</dt>
+              <dd>Identificar quién necesita el producto, qué problema resuelve y con qué restricciones: tiempos, infraestructura disponible y lineamientos de imagen institucional.</dd>
+              <dt>Diseño</dt>
+              <dd>Definir la arquitectura, el modelo de datos, los contratos de la API y las maquetas de interfaz antes de escribir código.</dd>
+              <dt>Construcción</dt>
+              <dd>Implementar por módulos, integrando con frecuencia en el repositorio y manteniendo un historial de cambios legible.</dd>
+              <dt>Verificación</dt>
+              <dd>Comprobar cada funcionalidad contra sus criterios de aceptación y revisar aspectos no funcionales como accesibilidad, rendimiento y seguridad.</dd>
+              <dt>Despliegue</dt>
+              <dd>Publicar en la infraestructura de destino, configurar variables de entorno y procesos, y dejar documentado cómo repetir el procedimiento.</dd>
+              <dt>Mantenimiento</dt>
+              <dd>Corregir incidencias y atender ajustes solicitados después de la puesta en producción.</dd>
+            </dl>
+            <p>No todos los frentes recorren el ciclo de la misma manera. Los micrositios institucionales se acercan a un <strong>mantenimiento evolutivo</strong>: los sitios ya existen y el trabajo consiste en actualizarlos, unificarlos y corregirlos. Los aplicativos nuevos, en cambio, recorren el ciclo completo desde el levantamiento de requerimientos hasta el despliegue.</p>
+          </section>
+
+          <section class="sec prosa" id="scrum" aria-labelledby="scrum-titulo">
+            <h2 class="sec__titulo" id="scrum-titulo">Scrum como marco de trabajo</h2>
+            <p>Scrum es un marco ágil para desarrollar productos complejos mediante iteraciones de duración fija llamadas <em>sprints</em>. Se apoya en tres pilares empíricos: <strong>transparencia</strong> (el trabajo y su estado son visibles para todos), <strong>inspección</strong> (el avance se revisa con frecuencia) y <strong>adaptación</strong> (el plan se ajusta con lo aprendido). Scrum no prescribe técnicas de programación; organiza cómo se decide qué construir, cómo se divide el trabajo y cómo se revisa el resultado.</p>
+
+            <div class="bloque">
+              <h3>Roles</h3>
+              <dl class="lista-definiciones">
+                <dt>Product Owner</dt>
+                <dd>Responsable de maximizar el valor del producto. Mantiene y ordena el backlog y decide qué se construye primero. En un proyecto institucional corresponde a la persona de la dependencia solicitante que conoce el proceso y puede tomar decisiones sobre el alcance.</dd>
+                <dt>Scrum Master</dt>
+                <dd>Facilita el proceso, ayuda a remover impedimentos y vela por que los eventos cumplan su propósito. En equipos pequeños este rol suele compartirse con el equipo o asumirlo quien coordina el trabajo.</dd>
+                <dt>Equipo de desarrollo</dt>
+                <dd>Quienes construyen el incremento en cada sprint. En esta pasantía, el equipo estuvo conformado por los dos pasantes.</dd>
+              </dl>
+            </div>
+
+            <div class="bloque">
+              <h3>Artefactos</h3>
+              <dl class="lista-definiciones">
+                <dt>Product Backlog</dt>
+                <dd>Lista ordenada de todo lo que el producto podría necesitar. Cada elemento se expresa, por lo general, como una historia de usuario.</dd>
+                <dt>Sprint Backlog</dt>
+                <dd>Subconjunto del backlog que el equipo se compromete a completar en el sprint, junto con el plan para lograrlo.</dd>
+                <dt>Incremento</dt>
+                <dd>Versión utilizable del producto que cumple la <em>Definición de Terminado</em>: el código está integrado en la rama principal, sus criterios de aceptación fueron verificados y puede desplegarse.</dd>
+              </dl>
+            </div>
+
+            <div class="bloque">
+              <h3>Sprints y eventos</h3>
+              <p>Un sprint dura entre una y cuatro semanas y contiene cuatro eventos: la <strong>planeación</strong>, donde se elige qué historias entran y cómo se abordarán; la <strong>reunión diaria</strong>, breve, para sincronizar avances e impedimentos; la <strong>revisión</strong>, donde se muestra el incremento a los interesados; y la <strong>retrospectiva</strong>, donde el equipo evalúa su forma de trabajar y acuerda mejoras.</p>
+              <p>El caso más estructurado de la pasantía fue SigueLab, cuyo alcance se descompuso en <strong>31 historias de usuario distribuidas en 9 sprints</strong>.</p>
+            </div>
+
+            <div class="bloque">
+              <h3>Historias de usuario</h3>
+              <p>Una historia de usuario describe una funcionalidad desde la perspectiva de quien la usa, con la estructura <em>Como &lt;rol&gt;, quiero &lt;acción&gt;, para &lt;beneficio&gt;</em>. Su valor está en mantener la conversación centrada en el problema del usuario y no en la solución técnica.</p>
+              <p>Una buena historia cumple el criterio <strong>INVEST</strong>: es <em>independiente</em> de otras, <em>negociable</em> en su detalle, <em>valiosa</em> para el usuario, <em>estimable</em> por el equipo, <em>pequeña</em> para caber en un sprint y <em>verificable</em> mediante criterios claros.</p>
+              <blockquote>
+                <p><strong>Ejemplo de formato.</strong> Como docente, quiero reservar un laboratorio en una franja horaria, para asegurar el espacio de mi práctica.</p>
+              </blockquote>
+            </div>
+
+            <div class="bloque">
+              <h3>Criterios de aceptación</h3>
+              <p>Los criterios de aceptación definen cuándo una historia está completa. Se redactan como escenarios verificables con la forma <em>Dado / Cuando / Entonces</em>, lo que permite convertirlos casi directamente en casos de prueba.</p>
+              <blockquote>
+                <p><strong>Dado</strong> que el laboratorio está libre de 8:00 a 10:00, <strong>cuando</strong> el docente envía la reserva para esa franja, <strong>entonces</strong> el sistema la registra y la franja deja de aparecer como disponible.</p>
+                <p><strong>Dado</strong> que la franja ya está reservada, <strong>cuando</strong> otro usuario intenta reservarla, <strong>entonces</strong> el sistema rechaza la solicitud e informa el conflicto.</p>
+              </blockquote>
+            </div>
+
+            <div class="bloque">
+              <h3>Priorización MoSCoW</h3>
+              <p>Para ordenar el backlog se usa la técnica MoSCoW, que clasifica cada requisito según su importancia para la entrega:</p>
+              <div class="tabla-scroll" role="region" tabindex="0" aria-label="Categorías de priorización MoSCoW">
+                <table>
+                  <caption class="sr-only">Categorías de priorización MoSCoW</caption>
+                  <thead>
+                    <tr><th scope="col">Categoría</th><th scope="col">Significado</th><th scope="col">Criterio práctico</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">Must have</th><td>Imprescindible</td><td>Sin esta funcionalidad el producto no cumple su propósito; la entrega no es viable.</td></tr>
+                    <tr><th scope="row">Should have</th><td>Importante</td><td>Aporta mucho valor, pero existe una alternativa temporal si no alcanza a construirse.</td></tr>
+                    <tr><th scope="row">Could have</th><td>Deseable</td><td>Mejora la experiencia; se incluye si el tiempo lo permite.</td></tr>
+                    <tr><th scope="row">Won't have (esta vez)</th><td>Fuera de alcance</td><td>Se reconoce y se registra, pero se aplaza explícitamente a una versión futura.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Hacer explícito lo que queda fuera es tan importante como lo que entra: evita que el alcance crezca sin control y deja un registro claro para quien continúe el desarrollo.</p>
+            </div>
+          </section>
+
+          <section class="sec prosa" id="github" aria-labelledby="github-titulo">
+            <h2 class="sec__titulo" id="github-titulo">GitHub Issues y Milestones</h2>
+            <p>El backlog se gestiona sobre el mismo lugar donde vive el código. Cada historia de usuario, tarea técnica o error se registra como un <strong>issue</strong> de GitHub, con una descripción, sus criterios de aceptación y etiquetas que indican el tipo de trabajo, la prioridad y el módulo afectado.</p>
+            <div class="bloque">
+              <h3>Issues como tablero kanban</h3>
+              <p>Los issues se organizan en un tablero de GitHub Projects con columnas que representan el flujo de trabajo: <em>Por hacer</em>, <em>En curso</em>, <em>En revisión</em> y <em>Terminado</em>. Mover una tarjeta entre columnas hace visible el estado del sprint sin necesidad de reuniones adicionales y permite detectar cuellos de botella, como varias tareas detenidas en revisión.</p>
+            </div>
+            <div class="bloque">
+              <h3>Milestones como sprints</h3>
+              <p>Cada sprint se modela como un <strong>milestone</strong> con fecha de cierre. Los issues comprometidos en el sprint se asignan a ese milestone y GitHub calcula el avance como la proporción de issues cerrados. Al terminar el sprint, lo no completado se traslada al siguiente milestone o vuelve al backlog.</p>
+            </div>
+            <div class="bloque">
+              <h3>Trazabilidad</h3>
+              <p>Cuando un pull request incluye en su descripción una referencia como <code>Closes #12</code>, GitHub cierra el issue al integrarse el cambio. Así cada requisito queda vinculado con el código que lo implementa, la revisión que lo aprobó y el sprint en que se entregó.</p>
+            </div>
+          </section>
+
+          <section class="sec prosa" id="git" aria-labelledby="git-titulo">
+            <h2 class="sec__titulo" id="git-titulo">Control de versiones con Git</h2>
+            <p>Git es un sistema de control de versiones distribuido: cada copia del repositorio contiene el historial completo. Permite trabajar en paralelo sin pisar el trabajo ajeno, volver a cualquier estado anterior y saber quién cambió qué y por qué.</p>
+            <div class="bloque">
+              <h3>Flujo de ramas</h3>
+              <p>El trabajo se organiza en ramas con propósitos distintos. Un esquema habitual, del que parten las estrategias de cada repositorio, es el siguiente:</p>
+              <div class="tabla-scroll" role="region" tabindex="0" aria-label="Ramas y su propósito">
+                <table>
+                  <caption class="sr-only">Ramas y su propósito</caption>
+                  <thead>
+                    <tr><th scope="col">Rama</th><th scope="col">Propósito</th><th scope="col">Origen y destino</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row"><code>main</code></th><td>Código estable, equivalente a lo que está en producción.</td><td>Recibe integraciones revisadas.</td></tr>
+                    <tr><th scope="row"><code>develop</code></th><td>Integración de funcionalidades terminadas antes de liberar.</td><td>Sale de <code>main</code>; vuelve a <code>main</code> en cada entrega.</td></tr>
+                    <tr><th scope="row"><code>feature/…</code></th><td>Una funcionalidad o historia de usuario.</td><td>Sale de <code>develop</code>; vuelve por pull request.</td></tr>
+                    <tr><th scope="row"><code>fix/…</code></th><td>Corrección de un error detectado en desarrollo.</td><td>Sale de <code>develop</code>; vuelve por pull request.</td></tr>
+                    <tr><th scope="row"><code>hotfix/…</code></th><td>Corrección urgente sobre producción.</td><td>Sale de <code>main</code>; vuelve a <code>main</code> y a <code>develop</code>.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Cuando el despliegue se automatiza, es común añadir una rama de salida que contiene solo el resultado compilado, separada del código fuente. La estrategia concreta de cada repositorio se registra en su ficha de proyecto.</p>
+            </div>
+            <div class="bloque">
+              <h3>Convención de commits</h3>
+              <p>Los mensajes de commit siguen la especificación <strong>Conventional Commits</strong>: <code>tipo(ámbito): descripción</code>, con la descripción en imperativo y en minúscula. Un historial con esta forma se lee como una bitácora del proyecto y permite generar notas de versión de manera automática.</p>
+              <div class="tabla-scroll" role="region" tabindex="0" aria-label="Tipos de commit">
+                <table>
+                  <caption class="sr-only">Tipos de commit de Conventional Commits</caption>
+                  <thead>
+                    <tr><th scope="col">Tipo</th><th scope="col">Uso</th><th scope="col">Ejemplo</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row"><code>feat</code></th><td>Nueva funcionalidad</td><td><code>feat(reservas): validar choque de franjas</code></td></tr>
+                    <tr><th scope="row"><code>fix</code></th><td>Corrección de un error</td><td><code>fix(auth): renovar token expirado</code></td></tr>
+                    <tr><th scope="row"><code>docs</code></th><td>Documentación</td><td><code>docs: describir variables de entorno</code></td></tr>
+                    <tr><th scope="row"><code>style</code></th><td>Formato sin cambio de lógica</td><td><code>style: aplicar prettier</code></td></tr>
+                    <tr><th scope="row"><code>refactor</code></th><td>Reestructuración sin cambio de comportamiento</td><td><code>refactor(usuarios): extraer servicio</code></td></tr>
+                    <tr><th scope="row"><code>test</code></th><td>Pruebas</td><td><code>test(reservas): cubrir cancelación</code></td></tr>
+                    <tr><th scope="row"><code>chore</code></th><td>Mantenimiento y dependencias</td><td><code>chore: actualizar dependencias</code></td></tr>
+                    <tr><th scope="row"><code>ci</code></th><td>Integración y despliegue continuo</td><td><code>ci: compilar en cada push a main</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="sec prosa" id="cliente-servidor" aria-labelledby="cliente-servidor-titulo">
+            <h2 class="sec__titulo" id="cliente-servidor-titulo">Arquitectura cliente-servidor y API REST</h2>
+            <p>En la arquitectura cliente-servidor, la interfaz que usa la persona (el cliente, en este caso una aplicación web que corre en el navegador) está separada del componente que guarda los datos y aplica las reglas de negocio (el servidor). Ambos se comunican por la red mediante peticiones y respuestas. La separación permite evolucionar cada parte por su cuenta, desplegarlas en lugares distintos y atender con un mismo servidor a varios clientes.</p>
+            <p>El servidor se organiza en <strong>capas</strong>: los <em>controladores</em> reciben la petición HTTP y validan la entrada; los <em>servicios</em> contienen la lógica de negocio; la capa de <em>acceso a datos</em> traduce las operaciones a consultas sobre la base de datos. Cada capa conoce solo a la inmediatamente inferior, lo que facilita probar y modificar el código. Frameworks como NestJS, usado en varios de los desarrollos, imponen esta estructura mediante módulos, controladores, proveedores e inyección de dependencias.</p>
+            <div class="bloque">
+              <h3>Principios REST</h3>
+              <p>REST es un estilo para diseñar APIs sobre HTTP. Los datos se exponen como <strong>recursos</strong> identificados por URL (<code>/laboratorios</code>, <code>/laboratorios/7/reservas</code>), las operaciones se expresan con los <strong>métodos HTTP</strong> y el resultado se comunica con <strong>códigos de estado</strong>. Cada petición es <strong>sin estado</strong>: lleva consigo toda la información necesaria, incluida la credencial, de modo que el servidor no depende de sesiones en memoria. Los datos viajan en formato JSON.</p>
+              <div class="tabla-scroll" role="region" tabindex="0" aria-label="Métodos HTTP">
+                <table>
+                  <caption class="sr-only">Métodos HTTP y su significado</caption>
+                  <thead>
+                    <tr><th scope="col">Método</th><th scope="col">Operación</th><th scope="col">Respuesta habitual</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row"><code>GET</code></th><td>Consultar un recurso o una colección</td><td><code>200 OK</code></td></tr>
+                    <tr><th scope="row"><code>POST</code></th><td>Crear un recurso</td><td><code>201 Created</code></td></tr>
+                    <tr><th scope="row"><code>PUT</code> / <code>PATCH</code></th><td>Reemplazar o modificar parcialmente</td><td><code>200 OK</code></td></tr>
+                    <tr><th scope="row"><code>DELETE</code></th><td>Eliminar un recurso</td><td><code>204 No Content</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Los errores también son parte del contrato: <code>400</code> para datos inválidos, <code>401</code> cuando falta autenticación, <code>403</code> cuando el usuario no tiene permiso, <code>404</code> cuando el recurso no existe, <code>409</code> ante un conflicto —como una reserva duplicada— y <code>500</code> ante una falla inesperada del servidor.</p>
+            </div>
+            <div class="bloque">
+              <h3>Seguridad y documentación</h3>
+              <p>Como el cliente y el servidor suelen estar en dominios distintos, el servidor declara mediante <strong>CORS</strong> qué orígenes pueden consumirlo. La autenticación sin estado se resuelve habitualmente con tokens firmados (JWT) enviados en cada petición. Para que la API pueda usarse sin leer el código, se documenta con la especificación <strong>OpenAPI</strong>, que herramientas como Swagger convierten en una página interactiva.</p>
+            </div>
+          </section>
+
+          <section class="sec prosa" id="requerimientos" aria-labelledby="requerimientos-titulo">
+            <h2 class="sec__titulo" id="requerimientos-titulo">Levantamiento de requerimientos</h2>
+            <p>El levantamiento de requerimientos busca entender qué necesita realmente quien solicita un desarrollo, que no siempre coincide con lo que pide en la primera conversación. Un requisito mal entendido es el error más costoso de corregir, porque se descubre tarde y arrastra decisiones de diseño.</p>
+            <div class="bloque">
+              <h3>Técnicas</h3>
+              <ul>
+                <li><strong>Entrevistas y reuniones</strong> con la dependencia solicitante para conocer el proceso actual, sus problemas y quiénes intervienen.</li>
+                <li><strong>Revisión de lo existente</strong>: sitios publicados, formatos, hojas de cálculo o procedimientos manuales que el sistema va a reemplazar.</li>
+                <li><strong>Prototipos y maquetas</strong> para validar flujos e interfaces antes de programarlos.</li>
+                <li><strong>Validación iterativa</strong>: cada entrega del sprint se convierte en una nueva oportunidad para confirmar o corregir lo entendido.</li>
+              </ul>
+            </div>
+            <div class="bloque">
+              <h3>Funcionales y no funcionales</h3>
+              <p>Los <strong>requerimientos funcionales</strong> describen lo que el sistema debe hacer: registrar una reserva, asignar un punto a un estudiante, publicar una noticia. Los <strong>no funcionales</strong> describen cómo debe hacerlo: tiempos de respuesta, compatibilidad con dispositivos móviles, accesibilidad, seguridad de los datos personales, alineación con la imagen institucional y restricciones de la infraestructura disponible para alojarlo.</p>
+            </div>
+            <div class="bloque">
+              <h3>Del requisito a la historia</h3>
+              <p>Los requisitos levantados se traducen en historias de usuario con sus criterios de aceptación, se priorizan con MoSCoW y se registran como issues. De este modo, la conversación inicial con la dependencia queda conectada, sin pasos intermedios, con el backlog, el código y la entrega.</p>
+            </div>
+          </section>
+
+        
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="pie__interior">
+      <p><strong>Informe final de pasantía</strong><br>Dirección de Comunicaciones · Universidad Santo Tomás, seccional Tunja · 2026</p>
+      <div class="pie__paleta" aria-hidden="true">
+        <span style="background:#009fe3"></span><span style="background:#2c56fc"></span><span style="background:#f39200"></span><span style="background:#b5d334"></span><span style="background:#004f9f"></span><span style="background:#fdc300"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./data/general.js"></script>
+  <script src="./data/proyectos.js"></script>
+  <script src="./data/cronograma.js"></script>
+  <script src="./assets/js/app.js"></script>
+  <script>
+    App.montarMetodologia();
+  </script>
+</body>
+</html>

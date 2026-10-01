@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cronograma · Informe de pasantía</title>
+  <meta name="description" content="Cronograma de la pasantía: avance de horas, resumen mensual, actividades semanales y diagrama de Gantt de los proyectos.">
+  <link rel="icon" href="./assets/img/marcas/usta-escudo.webp" type="image/webp">
+  <link rel="stylesheet" href="./assets/css/estilos.css">
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body data-pagina="cronograma" data-seccion="cronograma" data-raiz="./">
+  <a class="salto" href="#contenido">Saltar al contenido</a>
+
+  <header class="barra">
+    <div class="barra__interior">
+      <a class="marca" href="./index.html">
+        <img src="./assets/img/marcas/usta-escudo.webp" alt="Escudo de la Universidad Santo Tomás">
+        <span>Informe de pasantía</span>
+      </a>
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
+        <span class="menu-boton__icono" aria-hidden="true"></span>Menú
+      </button>
+      <nav id="menu-principal" class="menu" aria-label="Principal">
+        <ul>
+          <li><a href="./index.html" data-seccion="inicio">Inicio</a></li>
+          <li><a href="./index.html#proyectos" data-seccion="proyectos">Proyectos</a></li>
+          <li><a href="./metodologia.html" data-seccion="metodologia">Metodología</a></li>
+          <li><a href="./cronograma.html" data-seccion="cronograma">Cronograma</a></li>
+          <li><a href="./conclusiones.html" data-seccion="conclusiones">Conclusiones</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <header class="cabecera-oscura">
+      <div class="cabecera-oscura__aro" aria-hidden="true"></div>
+      <div class="contenedor">
+        <p class="antetitulo">Dedicación horaria</p>
+        <h1>Cronograma</h1>
+        <div id="crono-cabecera"></div>
+      </div>
+    </header>
+    <noscript><div class="contenedor"><p class="aviso">Este informe usa JavaScript para mostrar los datos. Actívalo para ver el contenido completo.</p></div></noscript>
+    <div class="contenedor">
+      <div id="cronograma"></div>
+      <div id="gantt"></div>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="pie__interior">
+      <p><strong>Informe final de pasantía</strong><br>Dirección de Comunicaciones · Universidad Santo Tomás, seccional Tunja · 2026</p>
+      <div class="pie__paleta" aria-hidden="true">
+        <span style="background:#009fe3"></span><span style="background:#2c56fc"></span><span style="background:#f39200"></span><span style="background:#b5d334"></span><span style="background:#004f9f"></span><span style="background:#fdc300"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./data/general.js"></script>
+  <script src="./data/proyectos.js"></script>
+  <script src="./data/cronograma.js"></script>
+  <script src="./assets/js/app.js"></script>
+  <script>
+    App.montarCronograma();
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+/* Tema Rally Neotomasino — tomado del commit original del rally (b10d088,
+   src/styles/theme.css): azul medianoche #00336A, naranja #F39200, papel
+   #FFF1DC, texto #2A2A33, Poppins y radios de 6 a 10 px. Los sellos son los
+   SVG originales de cada dependencia. */
+
+.tema-neotomasino {
+  --p-fondo: #fff1dc;
+  --p-superficie: #ffffff;
+  --p-superficie-2: #fbe6c4;
+  --p-texto: #2a2a33;
+  --p-suave: #55535e;
+  --p-titulo: #00336a;
+  --p-primario: #00336a;
+  --p-sobre-primario: #ffffff;
+  --p-acento: #f39200;
+  --p-sobre-acento: #1a1300;
+  --p-oscuro: #00336a;
+  --p-oscuro-2: #001f42;
+  --p-etiqueta-oscuro: #f39200;
+  --p-suave-oscuro: #c9d8ea;
+  --p-num: #8a4a00;
+  --p-borde: #e7d3b3;
+  --p-radio: 10px;
+  --p-radio-chip: 6px;
+  --p-radio-capa: 10px;
+  --p-fuente: var(--f-titulos);
+  --p-fuente-titulos: var(--f-titulos);
+  --p-peso-titulo: 800;
+}
+
+.hero--neotomasino { color: #2a2a33; background: #fff1dc; border-bottom: 6px solid #f39200; }
+.hero--neotomasino .migas { color: #00336a; }
+.hero--neotomasino .hero__rotulo { color: #ffffff; background: #00336a; }
+.hero--neotomasino .hero__bienvenida { display: block; width: 100%; max-width: 24rem; margin-bottom: var(--sp-5); transform: rotate(-2deg); }
+.hero--neotomasino h1 { color: #00336a; font-size: var(--fs-4xl); }
+.hero--neotomasino .hero__datos > div { background: #ffffff; border: 2px solid #00336a; }
+.hero--neotomasino .hero__datos dt { color: #8a4a00; }
+.hero--neotomasino .hero__datos dd { color: #00336a; }
+.hero--neotomasino .boton--secundario { color: #00336a; }
+
+.pasaporte {
+  display: flex;
+  min-height: 24rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px rgb(0 51 106 / 0.18);
+  transform: rotate(2deg);
+}
+.pasaporte__hoja { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-5); }
+.pasaporte__hoja + .pasaporte__hoja { border-left: 2px dashed #e7d3b3; }
+.pasaporte__escudo { width: 4rem; height: 4rem; }
+.pasaporte__titulo { font-weight: 800; font-size: var(--fs-lg); line-height: 1.1; color: #00336a; }
+.pasaporte__linea { height: 0.6rem; width: 80%; border-radius: 4px; background: #f3e6cf; }
+.pasaporte__linea.corta { width: 55%; }
+.pasaporte__thommy { width: 100%; max-width: 9rem; margin-top: auto; }
+.pasaporte__sellos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: center; gap: var(--sp-3); }
+.pasaporte__sellos img { width: 100%; max-width: 7rem; justify-self: center; }
+.pasaporte__sellos img:nth-child(odd) { transform: rotate(-12deg); }
+.pasaporte__sellos img:nth-child(even) { transform: rotate(9deg); }
+
+.tema-neotomasino .indice-caja .indice ol { border: 2px solid #00336a; background: #ffffff; padding: var(--sp-3); }
+.tema-neotomasino .indice__marca { color: #8a4a00; border-color: #f39200; }
+.tema-neotomasino .indice a[aria-current="true"] .indice__marca { color: #ffffff; border-color: #ffffff; }
+.tema-neotomasino .hito { border-style: dashed; border-color: #00336a; }
+.tema-neotomasino .hito:nth-child(3n+1) { transform: rotate(-1.5deg); }
+.tema-neotomasino .hito:nth-child(3n+2) { transform: rotate(1deg); border-color: #f39200; }
+.tema-neotomasino .hito:nth-child(3n+3) { transform: rotate(-1deg); background: #f39200; border-color: #f39200; }
+.tema-neotomasino .hito:nth-child(3n+3) time { color: #1a1300; }
+.tema-neotomasino .chip--codigo { color: #00336a; }
+
+@media (max-width: 56rem) {
+  .pasaporte { transform: none; min-height: 0; }
+  .pasaporte__hoja { padding: var(--sp-4); }
+  .pasaporte__titulo { font-size: var(--fs-sm); overflow-wrap: anywhere; }
+}

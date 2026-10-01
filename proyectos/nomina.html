@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plataforma de Nómina · Informe de pasantía</title>
+  <meta name="description" content="Ficha del proyecto Plataforma de Nómina: propósito, arquitectura, tecnologías, control de versiones y despliegue.">
+  <link rel="icon" href="../assets/img/marcas/usta-escudo.webp" type="image/webp">
+  <link rel="stylesheet" href="../assets/css/estilos.css">
+  <link rel="stylesheet" href="../assets/css/temas/nomina.css">
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body class="tema-nomina" data-pagina="proyecto" data-seccion="proyectos" data-raiz="../">
+  <a class="salto" href="#contenido">Saltar al contenido</a>
+
+  <header class="barra">
+    <div class="barra__interior">
+      <a class="marca" href="../index.html">
+        <img src="../assets/img/marcas/usta-escudo.webp" alt="Escudo de la Universidad Santo Tomás">
+        <span>Informe de pasantía</span>
+      </a>
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-principal">
+        <span class="menu-boton__icono" aria-hidden="true"></span>Menú
+      </button>
+      <nav id="menu-principal" class="menu" aria-label="Principal">
+        <ul>
+          <li><a href="../index.html" data-seccion="inicio">Inicio</a></li>
+          <li><a href="../index.html#proyectos" data-seccion="proyectos">Proyectos</a></li>
+          <li><a href="../metodologia.html" data-seccion="metodologia">Metodología</a></li>
+          <li><a href="../cronograma.html" data-seccion="cronograma">Cronograma</a></li>
+          <li><a href="../conclusiones.html" data-seccion="conclusiones">Conclusiones</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" class="ficha" tabindex="-1">
+    <noscript><div class="contenedor"><p class="aviso">Este informe usa JavaScript para mostrar los datos. Actívalo para ver el contenido completo.</p></div></noscript>
+    <article id="proyecto"></article>
+    <div class="contenedor">
+      <nav class="paginador" id="paginador" aria-label="Otros proyectos"></nav>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="pie__interior">
+      <p><strong>Informe final de pasantía</strong><br>Dirección de Comunicaciones · Universidad Santo Tomás, seccional Tunja · 2026</p>
+      <div class="pie__paleta" aria-hidden="true">
+        <span style="background:#009fe3"></span><span style="background:#2c56fc"></span><span style="background:#f39200"></span><span style="background:#b5d334"></span><span style="background:#004f9f"></span><span style="background:#fdc300"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../data/general.js"></script>
+  <script src="../data/proyectos.js"></script>
+  <script src="../data/cronograma.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script>
+    const ID_PROYECTO = "nomina";
+    App.montarProyecto(ID_PROYECTO);
+  </script>
+</body>
+</html>

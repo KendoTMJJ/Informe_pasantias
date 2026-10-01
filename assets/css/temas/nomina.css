@@ -1,0 +1,76 @@
+/* Tema Plataforma de Nómina — tomado de nomina-front-end (src/styles.scss y
+   features/inicio): paleta "Portales institucionales", Poppins en títulos,
+   tarjetas blancas de 14 px con sombra suave ("el aire de Nubank"), franja
+   degradada azul → cerúleo → amarillo y las decoraciones de esquina de la
+   pantalla de inicio. */
+
+.tema-nomina {
+  --p-fondo: #f6f7f9;
+  --p-superficie: #ffffff;
+  --p-superficie-2: #eef3fa;
+  --p-texto: #1a1d29;
+  --p-suave: #6b7280;
+  --p-titulo: #00336a;
+  --p-primario: #00336a;
+  --p-sobre-primario: #ffffff;
+  --p-acento: #fdc300;
+  --p-sobre-acento: #001f42;
+  --p-oscuro: #00336a;
+  --p-oscuro-2: #001f42;
+  --p-etiqueta-oscuro: #fdc300;
+  --p-suave-oscuro: #c9d8ea;
+  --p-num: #004f9f;
+  --p-borde: #e6e8ec;
+  --p-radio: 14px;
+  --p-radio-chip: 999px;
+  --p-radio-capa: 14px;
+  --p-fuente: var(--f-cuerpo);
+  --p-fuente-titulos: var(--f-titulos);
+  --p-peso-titulo: 700;
+}
+
+.hero--nomina { color: #1a1d29; background: #ffffff; }
+.hero--nomina::before {
+  content: ""; position: absolute; inset: 0 0 auto; z-index: 2; height: 5px;
+  background: linear-gradient(90deg, #00336a 0%, #009fe3 55%, #fdc300 100%);
+}
+.hero__deco { position: absolute; z-index: 0; pointer-events: none; user-select: none; }
+.hero--nomina .hero__interior { z-index: 1; }
+.hero--nomina .migas ol { display: inline-flex; padding: var(--sp-1) var(--sp-3); background: rgb(255 255 255 / 0.85); border-radius: var(--radio-pildora); }
+.hero__deco--izq { top: 0; left: 0; height: 62%; width: auto; }
+.hero__deco--der { bottom: 0; right: 0; height: 66%; width: auto; }
+.hero--nomina .migas { color: #6b7280; }
+.hero__centro { max-width: 62rem; margin-inline: auto; text-align: center; }
+.hero--nomina .hero__rotulo { color: #ffffff; background: #00336a; font-family: var(--f-titulos); font-weight: 500; letter-spacing: 0.02em; text-transform: none; }
+.hero__marca { display: flex; align-items: center; justify-content: center; gap: var(--sp-4); text-align: left; }
+.hero__marca img { width: 4.5rem; height: 4.5rem; }
+.hero--nomina h1 { font-size: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); font-weight: 700; color: #00336a; }
+.hero__marca p { margin-top: var(--sp-1); color: #6b7280; }
+.hero--nomina .hero__bajada { margin-inline: auto; color: #374151; }
+.hero__modulos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); max-width: 40rem; margin: var(--sp-7) auto 0; }
+.hero__modulos a {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-6);
+  color: #00336a;
+  text-decoration: none;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px rgb(16 24 40 / 0.06);
+  transition: transform var(--transicion);
+}
+.hero__modulos a:hover { transform: translateY(-3px); }
+.hero__modulos svg { width: 2.5rem; height: 2.5rem; }
+.hero__modulos strong { font-family: var(--f-titulos); font-size: var(--fs-md); }
+.hero__modulos span { font-size: var(--fs-sm); color: #6b7280; }
+.hero--nomina .hero__datos, .hero--nomina .hero__botones { justify-content: center; }
+.hero--nomina .hero__datos > div { background: #f6f7f9; }
+.hero--nomina .hero__datos dt { color: #6b7280; }
+
+.tema-nomina .desarrollo__rotulo { background: #e6f6fd; color: #00336a; }
+.tema-nomina .desarrollo + .desarrollo .desarrollo__rotulo { background: #fff7cc; }
+
+@media (max-width: 48rem) {
+  .hero__deco { opacity: 0.35; }
+  .hero__modulos { grid-template-columns: minmax(0, 1fr); }
+  .hero__marca { flex-direction: column; text-align: center; }
+}

@@ -1,0 +1,46 @@
+/* Tema CAMINA-Living-Lab — tomado de camina-front (src/styles/variables.css y
+   src/styles/home/banner.css): azul #2C56FC como fondo del banner, lima
+   #B5D334 como acento, verde bosque #1A3C2E en bloques oscuros, Nunito y
+   botones píldora. */
+
+.tema-camina {
+  --p-fondo: #ffffff;
+  --p-superficie: #f5f5f5;
+  --p-superficie-2: #eef2ff;
+  --p-texto: #121212;
+  --p-suave: #4b5563;
+  --p-titulo: #121212;
+  --p-primario: #2c56fc;
+  --p-sobre-primario: #ffffff;
+  --p-acento: #b5d334;
+  --p-sobre-acento: #121212;
+  --p-oscuro: #1a3c2e;
+  --p-oscuro-2: #0f2a1f;
+  --p-etiqueta-oscuro: #b5d334;
+  --p-suave-oscuro: #c3d9bd;
+  --p-num: #2c56fc;
+  --p-borde: #e5e7eb;
+  --p-radio: 24px;
+  --p-radio-chip: 999px;
+  --p-radio-capa: 999px;
+  --p-fuente: var(--f-nunito);
+  --p-fuente-titulos: var(--f-nunito);
+  --p-peso-titulo: 900;
+}
+
+.hero--camina { color: #ffffff; background: #2c56fc; }
+.hero--camina :focus-visible { outline-color: #b5d334; }
+.hero--camina .migas { color: #dfe6ff; }
+.hero--camina .hero__rotulo { color: #ffffff; background: rgb(255 255 255 / 0.14); border: 1px solid rgb(255 255 255 / 0.4); }
+.hero--camina .hero__logo { width: 100%; max-width: 27rem; margin-bottom: var(--sp-5); }
+.hero--camina .hero__lema { font-weight: 800; font-size: clamp(1.4rem, 1rem + 1.4vw, 1.875rem); line-height: 1.35; }
+.hero--camina .hero__lema .lima { color: #b5d334; }
+.hero--camina .hero__bajada { color: #e8edff; }
+.hero--camina .hero__datos > div { background: rgb(255 255 255 / 0.12); }
+.hero--camina .hero__datos dt { color: #b5d334; }
+.hero--camina .boton--secundario { border-color: rgb(255 255 255 / 0.4); }
+.hero--camina .hero__globo { justify-self: end; width: 100%; max-width: 35rem; filter: drop-shadow(0 0 100px rgb(255 255 255 / 0.5)); }
+
+.tema-camina .capa--1 { background: #eef2ff; border-color: transparent; }
+.tema-camina .capa__nombre { text-align: center; }
+.tema-camina .capa { text-align: center; }
