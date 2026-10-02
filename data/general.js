@@ -28,8 +28,11 @@ window.GENERAL = {
     { nombre: "Wldy Sandoval", correo: "wldy.sandoval@usantoto.edu.co" },
   ],
 
+  // Director de la dependencia donde se hizo la pasantía.
+  director: "Iván Darío Gonzales Rubio",
+
   tutores: {
-    empresarial: "Iván Darío Gonzales Rubio",
+    empresarial: "William Fernando Abril Avella",
     academico: "Héctor Mauricio Bravo Cepeda",
   },
 
