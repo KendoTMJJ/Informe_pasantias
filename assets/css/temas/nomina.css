@@ -74,3 +74,9 @@
   .hero__modulos { grid-template-columns: minmax(0, 1fr); }
   .hero__marca { flex-direction: column; text-align: center; }
 }
+
+/* Ficha principal: cada desarrollo lleva a su propia ficha */
+.hero__modulos em { margin-top: var(--sp-1); font-size: var(--fs-xs); font-style: normal; font-weight: 700; color: #004f9f; }
+.desarrollo__ir { margin-top: var(--sp-5); border-radius: 10px; }
+.tema-nomina .desarrollo__ir { color: #001f42; background: #fdc300; }
+.tema-nomina .desarrollo + .desarrollo .desarrollo__ir { color: #ffffff; background: #00336a; }

@@ -1,42 +1,85 @@
 /* Tema Micrositios — paleta de los portales institucionales USTA:
-   cerúleo #009FE3, azul medianoche #00336A y amarillo #FDC300; Poppins y
-   esquinas rectas de 8 px. */
+   cerúleo #009FE3, azul medianoche #00336A y amarillo #FDC300 (los colores
+   de la barra superior de santototunja.edu.co), Poppins y esquinas de 8 px.
+
+   Los componentes compartidos (héroe, tarjetas, rueda…) están en
+   ../ficha-viva.css; aquí van la paleta y las tarjetas de los sitios. */
 
 .tema-micrositios {
-  --p-fondo: #ffffff;
-  --p-superficie: #f6f7f9;
+  --p-fondo: #f5fafd;
+  --p-superficie: #ffffff;
   --p-superficie-2: #e6f6fd;
+  --p-texto: #1a1d29;
+  --p-suave: #5b6675;
   --p-titulo: #00336a;
   --p-primario: #00336a;
+  --p-sobre-primario: #ffffff;
   --p-acento: #fdc300;
   --p-sobre-acento: #001f42;
-  --p-num: #004f9f;
-  --p-radio: 8px;
-  --p-radio-chip: 6px;
+  --p-num: #009fe3;
+  --p-borde: #dbe9f3;
+  --p-radio: 12px;
+  --p-radio-chip: 8px;
   --p-radio-capa: 8px;
+  --p-fuente: var(--f-titulos);
   --p-fuente-titulos: var(--f-titulos);
+  --p-peso-titulo: 700;
+
+  --v-primario: #00336a;
+  --v-medio: #004f9f;
+  --v-claro: #009fe3;
+  --v-acento: #fdc300;
+  --v-sobre-acento: #001f42;
+  --v-sobre-acento-suave: #4a3a00;
+  --v-oscuro: #001f42;
+  --v-fondo: #f5fafd;
+  --v-superficie: #ffffff;
+  --v-superficie-2: #e6f6fd;
+  --v-borde: #dbe9f3;
+  --v-texto: #1a1d29;
+  --v-suave: #5b6675;
+  --v-tinte: #e6f6fd;
+  --v-sombra-color: rgb(0 79 159 / 0.08);
+  --v-sombra: 5px 5px 0 rgb(0 159 227 / 0.12);
 }
 
-.hero--micrositios { color: #001f42; background: #009fe3; }
-.hero--micrositios .migas { color: #001f42; }
-.hero__mosaico {
-  position: absolute;
-  right: 3rem;
-  top: 3rem;
-  display: grid;
-  grid-template-columns: repeat(4, 4.75rem);
-  gap: 0.625rem;
-  transform: rotate(6deg);
-}
-.hero__mosaico span { width: 4.75rem; height: 4.75rem; border-radius: 8px; }
-.hero--micrositios .hero__rotulo { color: #ffffff; background: #00336a; font-family: var(--f-titulos); font-weight: 600; }
-.hero--micrositios h1 { max-width: 14ch; font-weight: 800; letter-spacing: -0.04em; }
-.hero--micrositios .hero__bajada { font-weight: 600; }
-.hero--micrositios .hero__cifra { margin-top: var(--sp-6); font-family: var(--f-titulos); font-size: clamp(4.5rem, 3rem + 5vw, 7.5rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; color: #ffffff; }
-.hero--micrositios .hero__cifra-texto { margin-top: var(--sp-2); font-weight: 700; }
-.hero--micrositios .hero__datos > div { background: rgb(255 255 255 / 0.35); }
-.hero--micrositios .boton--secundario { color: #001f42; }
+/* Héroe: la barra amarilla y cerúlea del portal principal */
+.hero--micrositios { background: #ffffff; border-bottom: 4px solid #009fe3; }
+.hero--micrositios::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: #fdc300; }
+.sitio-captura { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; animation: portada-entra 0.5s ease both; }
 
-@media (max-width: 64rem) {
-  .hero__mosaico { opacity: 0.25; }
+/* Los sitios */
+.sitios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.sitio-tarjeta { display: flex; flex-direction: column; overflow: hidden; background: #ffffff; border: 1px solid #dbe9f3; border-radius: 14px; box-shadow: var(--v-sombra); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.sitio-tarjeta:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 #009fe3; }
+.sitio-tarjeta__vista { position: relative; overflow: hidden; border-bottom: 1px solid #dbe9f3; }
+.sitio-tarjeta__vista img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; transition: transform 0.6s ease; }
+.sitio-tarjeta:hover .sitio-tarjeta__vista img { transform: scale(1.04); }
+.sitio-tarjeta__cuerpo { display: flex; flex: 1; flex-direction: column; gap: var(--sp-3); padding: var(--sp-5); }
+.sitio-tarjeta__dep { font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #009fe3; }
+.sitio-tarjeta h3 { font-size: var(--fs-xl); font-weight: 700; color: #00336a; }
+.sitio-tarjeta__texto { font-size: var(--fs-sm); line-height: 1.6; color: #5b6675; }
+.sitio-tarjeta__pie { margin-top: auto; padding-top: var(--sp-2); }
+.sitio-tarjeta__enlace { display: inline-flex; padding: var(--sp-2) var(--sp-4); font-size: var(--fs-sm); font-weight: 700; color: #001f42; background: #fdc300; border-radius: 8px; text-decoration: none; box-shadow: 3px 3px 0 #00336a; transition: transform 0.1s ease, box-shadow 0.1s ease; }
+.sitio-tarjeta__enlace:hover { color: #001f42; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #00336a; }
+.sitio-tarjeta__extra { margin: 0; }
+.sitio-tarjeta__extra img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; border: 1px solid #dbe9f3; border-radius: 10px; }
+.sitio-tarjeta__extra figcaption { margin-top: var(--sp-1); font-size: var(--fs-xs); color: #5b6675; }
+.tema-micrositios .chip--suave { color: #00336a; background: #e6f6fd; border-color: transparent; }
+
+/* El portal principal ocupa todo el ancho: captura a la izquierda, texto a la derecha */
+.sitio-tarjeta--destacado { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); border-top: 6px solid #fdc300; }
+.sitio-tarjeta--destacado .sitio-tarjeta__vista { border-bottom: 0; border-right: 1px solid #dbe9f3; }
+.sitio-tarjeta--destacado .sitio-tarjeta__vista img { height: 100%; aspect-ratio: auto; min-height: 20rem; }
+.sitio-tarjeta--destacado h3 { font-size: var(--fs-2xl); }
+
+@media (max-width: 56rem) {
+  .sitios { grid-template-columns: minmax(0, 1fr); }
+  .sitio-tarjeta--destacado { grid-template-columns: minmax(0, 1fr); }
+  .sitio-tarjeta--destacado .sitio-tarjeta__vista { border-right: 0; border-bottom: 1px solid #dbe9f3; }
+  .sitio-tarjeta--destacado .sitio-tarjeta__vista img { min-height: 0; aspect-ratio: 16 / 9; }
 }
+@media (prefers-reduced-motion: reduce) { .sitio-captura { animation: none; } }
+.tema-micrositios .hero h1 { font-size: clamp(2.5rem, 1.5rem + 3.2vw, 4.25rem); }
+.sitio-tarjeta__tipo { align-self: start; padding: 0.2rem 0.6rem; font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.04em; color: #00336a; background: #e6f6fd; border-radius: 6px; }
+.sitio-tarjeta__tipo--desarrollo { color: #001f42; background: #fdc300; }

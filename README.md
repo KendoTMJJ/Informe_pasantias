@@ -28,9 +28,14 @@ los rallies, decoraciones de la Plataforma de Nómina…).
 ├── proyectos/                Una página por frente; solo cambia ID_PROYECTO y el tema
 │   ├── micrositios.html      ├── rally-living-lab.html   ├── mesas-ayuda.html
 │   ├── camina.html           ├── reservalab.html
-│   └── rally-neotomasino.html└── nomina.html
+│   ├── rally-neotomasino.html├── nomina.html
+│   ├── gestion-docente.html
+│   ├── nomina-dashboard.html Fichas hijas de nomina.html (campo "padre" en data/proyectos.js):
+│   └── nomina-novedades.html no cuentan como frente aparte en portada, Gantt ni conclusiones
 ├── assets/
 │   ├── css/estilos.css       Marco común y componentes (variables --p-* por ficha)
+│   ├── css/ficha-viva.css    Formato "página de producto" (rueda, tarjetas que giran, recorrido…);
+│   │                         lo usan Gestión Docente y Mesas de ayuda con body class "ficha-viva"
 │   ├── css/temas/*.css       Un tema por proyecto: paleta, tipografía y héroe
 │   ├── js/app.js             Render de datos, navegación e interacciones
 │   ├── fonts/                Poppins y Nunito autoalojadas (OFL)
@@ -122,11 +127,13 @@ de `assets/css/temas/`, con los valores tomados del repositorio del proyecto.
 
 ### Logos de tecnologías
 
-Los logos de `assets/img/tecnologias/` son de [Simple Icons](https://simpleicons.org)
-v16.33.0 (licencia CC0), con el color oficial de cada marca aplicado. Para
-agregar uno, descarga `https://cdn.jsdelivr.net/npm/simple-icons@16.33.0/icons/<slug>.svg`,
-añade `fill="#color"` a la etiqueta `<svg>` y registra el prefijo del nombre en
-la lista `LOGOS` de `app.js`. Las marcas siguen siendo de sus respectivos dueños.
+Los logos de `assets/img/tecnologias/` son de [Devicon](https://devicon.dev) (MIT)
+y [Simple Icons](https://simpleicons.org) v16.33.0 (CC0); `LICENCIAS.txt` dice de
+dónde sale cada uno. Para agregar uno de Simple Icons, descarga
+`https://cdn.jsdelivr.net/npm/simple-icons@16.33.0/icons/<slug>.svg`, añade
+`fill="#color"` a la etiqueta `<svg>` y registra el prefijo del nombre en la lista
+`LOGOS` de `app.js` (o indica la ruta en el campo `logo` de la tecnología). Las
+marcas siguen siendo de sus respectivos dueños.
 En cada ficha, el campo `stackPrincipal` de `data/proyectos.js` define qué
 tecnologías aparecen con logo en la sección Arquitectura.
 
