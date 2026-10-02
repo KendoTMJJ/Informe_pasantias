@@ -41,7 +41,7 @@
   // y tamaño/orden de su tarjeta en el mosaico de la portada.
   const TEMAS = {
     micrositios: { indice: 'Contenido', num: function (n) { return dos(n); }, teja: 'ancho-3', orden: 7 },
-    camina: { indice: 'En esta ficha', num: function (n) { return dos(n); }, teja: '', orden: 3 },
+    camina: { indice: 'En esta ficha', num: function (n) { return dos(n); }, teja: 'ancho-2', orden: 3 },
     neotomasino: { indice: 'Estaciones', num: function (n) { return 'Estación ' + dos(n); }, teja: 'ancho-2', orden: 1 },
     livinglab: { indice: 'Mapa', num: function (n) { return dos(n); }, teja: '', orden: 4 },
     reservalab: { indice: 'Ficha del proyecto', num: function (n) { return dos(n) + ' ·'; }, teja: 'alto-2', orden: 2, heroDentro: true },
@@ -167,7 +167,7 @@
     return '<ul class="chips"' + (etiqueta ? ' aria-label="' + esc(etiqueta) + '"' : '') + '>' + v.map(function (i) {
       const o = typeof i === 'string' ? { texto: i } : i;
       return '<li class="chip' + (claseBase ? ' ' + claseBase : '') + (o.clase ? ' ' + o.clase : '') + '"' +
-        (o.titulo ? ' title="' + esc(o.titulo) + '"' : '') + '>' + esc(o.texto) +
+        (o.titulo ? ' title="' + esc(o.titulo) + '"' : '') + '>' + (o.logo || '') + esc(o.texto) +
         (tieneContenido(o.extra) ? ' <small>' + esc(o.extra) + '</small>' : '') + '</li>';
     }).join('') + '</ul>';
   }
@@ -344,9 +344,52 @@
     const r = base || raiz();
     if (!lista.length) return '<p class="aviso">No hay proyectos registrados en data/proyectos.js.</p>';
     lista.sort(function (a, b) { return tema(a).orden - tema(b).orden; });
+    // CAMINA y el Rally Living Lab comparten metodología: se muestran como una pareja conectada.
+    const camina = lista.find(function (p) { return (p.identidad || {}).tema === 'camina'; });
+    const rally = lista.find(function (p) { return (p.identidad || {}).tema === 'livinglab'; });
+    let parejaHecha = false;
     return '<ul class="mosaico">' + lista.map(function (p) {
+      const t = (p.identidad || {}).tema;
+      if (camina && rally && (t === 'camina' || t === 'livinglab')) {
+        if (parejaHecha) return '';
+        parejaHecha = true;
+        return '<li class="ancho-2">' + tejaPareja(camina, rally, r) + '</li>';
+      }
       return '<li class="' + esc(tema(p).teja) + '">' + teja(p, r) + '</li>';
     }).join('') + '</ul>';
+  }
+
+  // Pareja conectada: CAMINA (la plataforma) y el Rally Living Lab (el festival), unidas por el acróstico.
+  function tejaPareja(camina, rally, base) {
+    const ic = camina.identidad || {};
+    const ir = rally.identidad || {};
+    const pasos = conContenido(((camina.extras || {}).acrostico || {}).pasos);
+    const sellos = conContenido((rally.extras || {}).sellos).filter(function (s) { return s.img; });
+    const img = function (src, clase, alt) {
+      return '<img class="' + clase + '" src="' + esc(ruta(src, base)) + '" alt="' + esc(alt || '') + '"' + (alt ? '' : ' aria-hidden="true"') + '>';
+    };
+    const confeti = ['#E24B4A', '#EF9F27', '#F2D024', '#7FBF5A', '#C060C7', '#4A9FE0', '#2c56fc', '#b5d334', '#E24B4A', '#4A9FE0'];
+    const rotulo = function (id) { return esc([id.numero, id.etiqueta].filter(tieneContenido).join(' · ')); };
+    return '<div class="pareja">' +
+      '<a class="pareja__mitad pareja__mitad--camina" href="' + esc(rutaProyecto(camina.id, base)) + '">' +
+      img('assets/img/marcas/camina-banner.png', 'pareja__globo', '') +
+      '<p class="pareja__rotulo">' + rotulo(ic) + '</p>' +
+      img('assets/img/marcas/camina-logo-blanco.png', 'pareja__logo', camina.nombre) +
+      (tieneContenido(ic.resumenTeja) ? '<p class="pareja__resumen">' + esc(ic.resumenTeja) + '</p>' : '') +
+      '<span class="pareja__ver">Ver ficha →</span></a>' +
+      '<a class="pareja__mitad pareja__mitad--rally" href="' + esc(rutaProyecto(rally.id, base)) + '">' +
+      '<span class="pareja__pagina" aria-hidden="true"></span>' +
+      sellos.slice(0, 6).map(function (s, i) { return img(s.img, 'pareja__sello-disperso pareja__sello-disperso--' + i, ''); }).join('') +
+      confeti.map(function (c, i) { return '<span class="pareja__confeti pareja__confeti--' + i + '" style="background:' + c + '" aria-hidden="true"></span>'; }).join('') +
+      '<p class="pareja__rotulo">' + rotulo(ir) + '</p>' +
+      img('assets/img/rally-living-lab/titulo-mapa-de-soluciones.svg', 'pareja__festival', 'Festival Santoto Camina Living Lab: Mapa de soluciones') +
+      '<span class="pareja__nombre">' + esc(rally.nombre) + '</span>' +
+      (tieneContenido(ir.resumenTeja) ? '<p class="pareja__resumen">' + esc(ir.resumenTeja) + '</p>' : '') + '</a>' +
+      (pasos.length ? '<div class="pareja__franja" aria-hidden="true">' + pasos.map(function (x) {
+        return '<span style="background:' + esc(x.color) + ';color:' + esc(x.colorTexto || '#ffffff') + '">' + esc(x.letra) + '</span>';
+      }).join('') + '</div>' : '') +
+      '<span class="pareja__vinculo" aria-hidden="true">Misma<br>metodología</span>' +
+      '</div>';
   }
 
   // Atajos a metodología y cronograma.
@@ -544,6 +587,16 @@
         (porque ? '<div class="qpq__bloque qpq__bloque--porque"><h3>Por qué se hizo</h3>' + porque + '</div>' : '');
       return seccion(ctx, 'que-y-por-que', 'Qué se hizo y por qué', bloques ? '<div class="qpq">' + bloques + '</div>' : '');
     },
+    // Cómo se juega: los momentos de la dinámica, en orden (rallies).
+    function (p, ctx) {
+      const pasos = conContenido((p.extras || {}).dinamica);
+      if (!pasos.length) return '';
+      return seccion(ctx, 'dinamica', 'Cómo se juega', '<ol class="dinamica">' + pasos.map(function (x, i) {
+        return '<li class="dinamica__paso"><span class="dinamica__num" aria-hidden="true">' + (i + 1) + '</span>' +
+          '<h3>' + esc(x.titulo) + '</h3><p>' + esc(x.detalle) + '</p>' +
+          (conContenido(x.datos).length ? '<ul class="dinamica__datos">' + conContenido(x.datos).map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('') + '</ul>' : '') + '</li>';
+      }).join('') + '</ol>');
+    },
     // Acróstico de la metodología (réplica de la sección "La ruta CAMINA" de camina-front).
     function (p, ctx) {
       const ac = (p.extras || {}).acrostico;
@@ -557,7 +610,8 @@
       }).join('');
       return seccion(ctx, 'metodologia', ac.titulo || 'Metodología',
         (tieneContenido(ac.nota) ? '<p class="sec__texto sec__suave" style="margin-bottom:var(--sp-5)">' + esc(ac.nota) + '</p>' : '') +
-        '<div class="ruta"><p class="ruta__rotulo">' + esc(ac.rotulo || 'Metodología') + '</p><p class="ruta__nombre">' + esc(ac.nombre || ac.titulo || '') + '</p>' +
+        '<div class="ruta"><p class="ruta__rotulo">' + esc(ac.rotulo || 'Metodología') + '</p>' +
+        (tieneContenido(ac.nombre) && ac.nombre !== ac.titulo ? '<p class="ruta__nombre">' + esc(ac.nombre) + '</p>' : '<div style="height:var(--sp-7)"></div>') +
         '<ol class="ruta__pasos">' + tarjetas + '</ol>' + (tieneContenido(ac.cita) ? '<p class="ruta__cita">' + esc(ac.cita) + '</p>' : '') + '</div>');
     },
     // Programas intervenidos (micrositios).
@@ -587,15 +641,6 @@
           return '<li class="sello">' + (x.img ? '<img src="' + esc(ruta(x.img, base)) + '" alt="" loading="lazy">' : '') + '<span>' + esc(x.nombre) + '</span>' +
             (tieneContenido(x.detalle) ? '<small class="sello__detalle">' + esc(x.detalle) + '</small>' : '') + '</li>';
         }).join('') + '</ul>');
-    },
-    // Comparativa de identidades (Rally Living Lab).
-    function (p, ctx) {
-      const otro = (p.extras || {}).comparativa;
-      if (!otro) return '';
-      return seccion(ctx, 'identidades', 'Un código, dos identidades', '<div class="comparativa">' +
-        '<div class="comparativa__lado comparativa__lado--neo"><span class="antetitulo">Rally Neotomasino</span><div class="comparativa__paleta" aria-hidden="true"><span style="background:#00336a"></span><span style="background:#f39200"></span><span style="background:#fff1dc;border:1px solid #e7d3b3"></span><span style="background:#7eb20b"></span></div><p>Poppins · radios de 6 a 10 px · sellos por dependencia</p></div>' +
-        '<div class="comparativa__lado comparativa__lado--ll"><span class="antetitulo">Rally Living Lab</span><div class="comparativa__paleta" aria-hidden="true"><span style="background:#2c56fc"></span><span style="background:#b5d334"></span><span style="background:#ffffff;border:1px solid #c7d2fe"></span><span style="background:#121212"></span></div><p>Nunito · formas redondeadas · sellos por etapa del método</p></div>' +
-        '</div><p class="sec__nota">Mismo frontend y backend; la identidad se cambia en src/styles/theme.css y src/lib/theme.js.</p>');
     },
     // Módulos por rol (ReservaLab).
     function (p, ctx) {
@@ -641,18 +686,20 @@
       }).join('') + '</ul>' : '') +
         seccion(ctx, 'flujo', 'Ciclo de una solicitud', f.length ? '<ol class="flujo">' + f.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>' : '');
     },
-    // Arquitectura.
+    // Arquitectura: stack principal, todas las tecnologías (desplegable), diagramas y textos que no repiten a los diagramas.
     function (p, ctx) {
       const capas = conContenido(p.capas);
-      const diagrama = capas.length ? '<ol class="capas" aria-label="Capas de la arquitectura">' + capas.map(function (c, i) {
+      const diagramas = renderDiagramas(p, ctx.base);
+      const respaldo = diagramas || !capas.length ? '' : '<ol class="capas" aria-label="Capas de la arquitectura">' + capas.map(function (c, i) {
         return (i ? '<li class="capas__flecha" aria-hidden="true">→</li>' : '') + '<li class="capa capa--' + (i + 1) + '"><p class="capa__rol">' + esc(c.rol) + '</p><p class="capa__nombre">' + esc(c.nombre) + '</p>' +
           (tieneContenido(c.detalle) ? '<p class="capa__detalle">' + esc(c.detalle) + '</p>' : '') + '</li>';
-      }).join('') + '</ol>' : '';
+      }).join('') + '</ol>';
       const t = p.teoria || {};
       const textos = TEORIA.filter(function (x) { return tieneContenido(t[x.clave]); }).map(function (x) {
         return '<div><h3>' + esc(x.titulo) + '</h3>' + parrafos(t[x.clave], 'sec__texto') + '</div>';
       }).join('');
-      return seccion(ctx, 'arquitectura', 'Arquitectura', diagrama + (textos ? '<div class="bloques-texto" style="margin-top:var(--sp-6)">' + textos + '</div>' : ''));
+      return seccion(ctx, 'arquitectura', 'Arquitectura', renderStack(p, ctx.base) + renderTodasTecnologias(p, ctx.base) + diagramas + respaldo +
+        (textos ? '<div class="bloques-texto" style="margin-top:var(--sp-6)">' + textos + '</div>' : ''));
     },
     // Módulos del backend: tabla si hay detalle, chips si solo hay nombres.
     function (p, ctx) {
@@ -677,71 +724,26 @@
         { clave: 'nombre', titulo: 'Entidad' }, { clave: 'campos', titulo: 'Campos principales' }, { clave: 'relaciones', titulo: 'Relaciones' }
       ], 'Entidades del modelo de datos') + '</div>' : ''));
     },
-    // Tecnologías agrupadas por categoría.
-    function (p, ctx) {
-      const tecs = conContenido(p.tecnologias).filter(function (x) { return tieneContenido(x.nombre); });
-      const claves = CATEGORIAS.map(function (c) { return c.clave; });
-      const grupos = CATEGORIAS.concat([{ clave: '_', etiqueta: 'Otras', chip: '' }]).map(function (c) {
-        const items = tecs.filter(function (x) { return c.clave === '_' ? claves.indexOf(x.categoria) === -1 : x.categoria === c.clave; });
-        if (!items.length) return '';
-        return '<div class="grupo-tec"><h3>' + esc(c.etiqueta) + '</h3>' + chips(items.map(function (x) {
-          return { texto: x.nombre, extra: x.version, titulo: x.uso, clase: c.chip };
-        })) + '</div>';
-      }).join('');
-      return seccion(ctx, 'tecnologias', 'Tecnologías', grupos ? '<div class="grupos-tec">' + grupos + '</div>' : '');
-    },
-    // Herramientas y control de versiones.
-    function (p, ctx) {
-      const h = p.herramientas || {};
-      const wf = conContenido(h.actions);
-      const repos = conContenido(p.repositorios).map(function (r) {
-        return {
-          nombre: urlExterna(r.url) ? enlaceExterno(r.url, r.nombre || r.url) : esc(r.nombre),
-          commits: tieneContenido(r.commits) ? num(r.commits) : '',
-          primer: formatearFecha(r.primerCommit), ultimo: formatearFecha(r.ultimoCommit)
-        };
-      });
-      const cuerpo = datos([{ etiqueta: 'Convención de commits', valor: h.convencionCommits }]) +
-        (tieneContenido(h.estrategiaRamas) ? sub('Estrategia de ramas', parrafos(h.estrategiaRamas, 'sec__texto')) : '') +
-        sub('Workflows de GitHub Actions', wf.length ? '<ul class="workflows">' + wf.map(function (w) {
-          return '<li class="workflow"><div class="workflow__cabeza"><strong>' + esc(w.nombre) + '</strong>' + (tieneContenido(w.disparador) ? '<code>' + esc(w.disparador) + '</code>' : '') + '</div>' +
-            (tieneContenido(w.automatiza) ? '<p>' + esc(w.automatiza) + '</p>' : '') + '</li>';
-        }).join('') + '</ul>' : '') +
-        sub('Otras herramientas', chips(h.otras)) +
-        sub('Repositorios', tabla(repos, [
-          { clave: 'nombre', titulo: 'Repositorio', html: true }, { clave: 'commits', titulo: 'Commits', clase: 'num' },
-          { clave: 'primer', titulo: 'Primer commit' }, { clave: 'ultimo', titulo: 'Último commit' }
-        ], 'Repositorios del proyecto'));
-      return seccion(ctx, 'versiones', 'Herramientas y control de versiones', cuerpo);
-    },
-    // Alojamiento y despliegue (bloque destacado).
+    // Despliegue y versiones: mapa del servidor, variables agrupadas, repositorios y convención de commits.
     function (p, ctx) {
       const d = p.despliegue || {};
-      const pm2 = d.pm2 || {};
-      const comandos = [d.comandoBuild, d.comandoStart].filter(tieneContenido);
-      const vars = conContenido(d.variablesEntorno);
-      const interior =
-        datos([
-          { etiqueta: 'Ruta / servidor web', valor: d.servidorWeb, codigo: true },
-          { etiqueta: 'Proceso PM2', valor: pm2.proceso, codigo: true },
-          { etiqueta: 'Script', valor: pm2.script, codigo: true },
-          { etiqueta: 'Modo', valor: pm2.modo }, { etiqueta: 'Instancias', valor: pm2.instancias },
-          { etiqueta: 'Logs', valor: pm2.logs, codigo: true },
-          { etiqueta: 'Puerto', valor: d.puerto, codigo: true }, { etiqueta: 'CORS', valor: d.cors, codigo: true },
-          { etiqueta: 'Evidencia', valor: d.evidencia, codigo: true }
-        ]) +
-        (comandos.length ? '<div><p class="despliegue__sub">Comandos</p><pre><code>' + comandos.map(function (c) { return '<b>$</b> ' + esc(c); }).join('\n') + '</code></pre></div>' : '') +
-        (vars.length ? '<div><p class="despliegue__sub">Variables de entorno</p><p class="despliegue__nota">Solo se listan los nombres; los valores viven fuera del repositorio.</p>' + chips(vars) + '</div>' : '');
-      if (!tieneContenido(d.plataforma) && !interior) return '';
-      return seccion(ctx, 'despliegue', 'Alojamiento y despliegue', '<div class="despliegue">' +
-        (tieneContenido(d.plataforma) ? '<p class="despliegue__plataforma"><span class="antetitulo">Plataforma</span><strong>' + esc(d.plataforma) + '</strong></p>' : '') + interior + '</div>');
+      const h = p.herramientas || {};
+      const conDiagrama = !!((p.diagramas || {}).despliegue);
+      const destinos = conContenido(d.destinos);
+      const cuerpo = (destinos.length ? renderServidor(d, ctx.base) : renderDespliegueBasico(d, conDiagrama)) +
+        renderVariables(d.variablesEntorno) +
+        (!conDiagrama && tieneContenido(h.estrategiaRamas) ? sub('Estrategia de ramas', parrafos(h.estrategiaRamas, 'sec__texto')) : '') +
+        renderWorkflows(conDiagrama ? [] : conContenido(h.actions)) +
+        renderRepositorios(p.repositorios, ctx.base) +
+        renderCommits(h);
+      return seccion(ctx, 'despliegue', 'Despliegue y versiones', cuerpo);
     },
-    // Calidad.
+    // Calidad y seguridad: pruebas y la lista única de medidas de seguridad.
     function (p, ctx) {
       const c = p.calidad || {};
       const lista = function (x) { const v = conContenido(x); return v.length ? '<ul class="sec__texto">' + v.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' : ''; };
-      return seccion(ctx, 'calidad', 'Calidad y aspectos destacables', parrafos(c.pruebas, 'sec__texto') +
-        sub('Rendimiento', lista(c.rendimiento)) + sub('Accesibilidad', lista(c.accesibilidad)) + sub('Seguridad', lista(c.seguridad)));
+      return seccion(ctx, 'calidad', 'Calidad y seguridad', sub('Pruebas', parrafos(c.pruebas, 'sec__texto')) +
+        sub('Seguridad', lista(c.seguridad)) + sub('Rendimiento', lista(c.rendimiento)) + sub('Accesibilidad', lista(c.accesibilidad)));
     },
     // Hitos.
     function (p, ctx) {
@@ -751,6 +753,15 @@
         const f = aFecha(x.fecha);
         return '<li class="hito">' + (f ? '<time datetime="' + aIso(f) + '">' + esc(formatearFecha(x.fecha)) + '</time>' : '') + '<p>' + esc(x.descripcion) + '</p></li>';
       }).join('') + '</ol>' : '');
+    },
+    // Comparativa de identidades (Rally Living Lab).
+    function (p, ctx) {
+      const otro = (p.extras || {}).comparativa;
+      if (!otro) return '';
+      return seccion(ctx, 'identidades', 'Un código, dos identidades', '<div class="comparativa">' +
+        '<div class="comparativa__lado comparativa__lado--neo"><span class="antetitulo">Rally Neotomasino</span><div class="comparativa__paleta" aria-hidden="true"><span style="background:#00336a"></span><span style="background:#f39200"></span><span style="background:#fff1dc;border:1px solid #e7d3b3"></span><span style="background:#7eb20b"></span></div><p>Poppins · radios de 6 a 10 px · sellos por dependencia</p></div>' +
+        '<div class="comparativa__lado comparativa__lado--ll"><span class="antetitulo">Rally Living Lab</span><div class="comparativa__paleta" aria-hidden="true"><span style="background:#2c56fc"></span><span style="background:#b5d334"></span><span style="background:#ffffff;border:1px solid #c7d2fe"></span><span style="background:#121212"></span></div><p>Nunito · formas redondeadas · sellos por etapa del método</p></div>' +
+        '</div><p class="sec__nota">Mismo frontend y backend; la identidad se cambia en src/styles/theme.css y src/lib/theme.js.</p>');
     },
     // Proyecto relacionado.
     function (p, ctx) {
@@ -772,6 +783,291 @@
       }).join('') + '</ul>' : '');
     }
   ];
+
+  /* ---------------------------------------------------------------------
+   * Logos de tecnologías (Simple Icons, CC0, en assets/img/tecnologias/)
+   * ------------------------------------------------------------------- */
+
+  // Prefijo del nombre de la tecnología → archivo del logo. Los más largos van primero.
+  const LOGOS = [
+    ['react router', 'reactrouter'], ['react', 'react'], ['vite', 'vite'], ['typescript', 'typescript'],
+    ['javascript', 'javascript'], ['nestjs', 'nestjs'], ['node', 'nodedotjs'], ['mariadb', 'mariadb'],
+    ['mysql', 'mysql'], ['typeorm', 'typeorm'], ['angular', 'angular'], ['github actions', 'githubactions'],
+    ['github', 'github'], ['cpanel', 'cpanel'], ['pm2', 'pm2'], ['swagger', 'swagger'], ['docker', 'docker'],
+    ['jest', 'jest'], ['pnpm', 'pnpm'], ['passport', 'passport'], ['jwt', 'jsonwebtokens'],
+    ['2 jwt', 'jsonwebtokens'], ['axios', 'axios'], ['postman', 'postman'], ['eslint', 'eslint'],
+    ['prettier', 'prettier'], ['pwa', 'pwa'], ['supabase', 'supabase']
+  ];
+
+  // Devuelve el archivo del logo de una tecnología, o "" si no hay.
+  function archivoLogo(nombre) {
+    const n = String(nombre || '').trim().toLowerCase();
+    const hit = LOGOS.find(function (l) { return n === l[0] || n.indexOf(l[0] + ' ') === 0 || n.indexOf(l[0]) === 0 && /[^a-z]/.test(n.charAt(l[0].length) || ' '); });
+    return hit ? hit[1] : '';
+  }
+
+  // Logo como <img> decorativo; si no existe, un monograma con la inicial.
+  function logoTec(nombre, base, clase) {
+    const a = archivoLogo(nombre);
+    if (a) return '<img class="' + (clase || 'logo-tec') + '" src="' + esc(ruta('assets/img/tecnologias/' + a + '.svg', base)) + '" alt="" aria-hidden="true">';
+    return '<span class="' + (clase || 'logo-tec') + ' logo-tec--monograma" aria-hidden="true">' + esc(String(nombre || '?').trim().charAt(0).toUpperCase()) + '</span>';
+  }
+
+  // Franja "Stack principal": logo, nombre, versión (tomada de tecnologias) y papel en el proyecto.
+  function renderStack(p, base) {
+    const stack = conContenido(p.stackPrincipal);
+    if (!stack.length) return '';
+    const tecs = conContenido(p.tecnologias);
+    return '<div class="stack"><p class="stack__titulo">Stack principal</p><ul class="stack__lista">' + stack.map(function (s) {
+      const t = tecs.find(function (x) { return String(x.nombre).toLowerCase() === String(s.nombre).toLowerCase(); }) || {};
+      const version = s.version || t.version;
+      return '<li class="stack__item"><span class="stack__logo">' + logoTec(s.nombre, base, 'stack__img') + '</span>' +
+        '<span class="stack__texto"><b>' + esc(s.nombre) + '</b>' + (tieneContenido(version) && /^\d/.test(version) ? ' <small>' + esc(version) + '</small>' : '') +
+        (tieneContenido(s.rol) ? '<em>' + esc(s.rol) + '</em>' : '') + '</span></li>';
+    }).join('') + '</ul></div>';
+  }
+
+  // Todas las tecnologías agrupadas por categoría; desplegable si ya hay stack principal.
+  function renderTodasTecnologias(p, base) {
+    const tecs = conContenido(p.tecnologias).filter(function (x) { return tieneContenido(x.nombre); });
+    if (!tecs.length) return '';
+    const claves = CATEGORIAS.map(function (c) { return c.clave; });
+    const grupos = CATEGORIAS.concat([{ clave: '_', etiqueta: 'Otras', chip: '' }]).map(function (c) {
+      const items = tecs.filter(function (x) { return c.clave === '_' ? claves.indexOf(x.categoria) === -1 : x.categoria === c.clave; });
+      if (!items.length) return '';
+      return '<div class="grupo-tec"><h3>' + esc(c.etiqueta) + '</h3>' + chips(items.map(function (x) {
+        return { texto: x.nombre, extra: x.version, titulo: x.uso, clase: c.chip, logo: archivoLogo(x.nombre) ? logoTec(x.nombre, base, 'chip__logo') : '' };
+      })) + '</div>';
+    }).join('');
+    const rejilla = '<div class="grupos-tec">' + grupos + '</div>';
+    if (!conContenido(p.stackPrincipal).length) return rejilla;
+    return '<details class="todas-tec"><summary>Ver las ' + tecs.length + ' tecnologías y versiones</summary>' + rejilla + '</details>';
+  }
+
+  /* ---------------------------------------------------------------------
+   * Despliegue y versiones (componentes visuales)
+   * ------------------------------------------------------------------- */
+
+  // Mapa del servidor: marco de la plataforma con una tarjeta por destino (frontend, API…).
+  function renderServidor(d, base) {
+    const destinos = conContenido(d.destinos);
+    const evid = String(d.evidencia || '').split('·').map(function (x) { return x.trim(); }).filter(Boolean);
+    return '<div class="srv"><div class="srv__cabeza"><span class="srv__logo">' + logoTec(d.plataforma || 'cPanel', base, 'srv__img') + '</span>' +
+      '<div><p class="srv__nombre">' + esc(d.plataforma || '') + '</p>' + (tieneContenido(d.servidor) ? '<p class="srv__detalle">' + esc(d.servidor) + '</p>' : '') + '</div></div>' +
+      '<ul class="srv__destinos">' + destinos.map(function (x) {
+        const filas = [
+          ['Ruta', x.ruta, true],
+          [x.proceso ? 'Proceso PM2' : 'Servido por', x.proceso || x.servidor, !!x.proceso],
+          ['Arranque', x.script, true]
+        ].filter(function (f) { return tieneContenido(f[1]); });
+        return '<li class="destino"><p class="destino__capa">' + logoTec(x.tecnologia || x.capa, base, 'destino__img') + esc(x.capa) + '</p>' +
+          '<p class="destino__nombre">' + esc(x.nombre) + '</p>' +
+          (filas.length ? '<dl class="destino__datos">' + filas.map(function (f) {
+            return '<div><dt>' + esc(f[0]) + '</dt><dd>' + (f[2] ? '<code>' + esc(f[1]) + '</code>' : esc(f[1])) + '</dd></div>';
+          }).join('') + '</dl>' : '') +
+          (tieneContenido(x.ruta) ? '' : '<p class="destino__pendiente">Ruta en el servidor por confirmar</p>') + '</li>';
+      }).join('') + '</ul>' +
+      (evid.length ? '<div class="srv__evidencia"><p>Evidencia en el repositorio</p><ul>' + evid.map(function (e) {
+        return '<li><span aria-hidden="true">▤</span><code>' + esc(e) + '</code></li>';
+      }).join('') + '</ul></div>' : '') + '</div>';
+  }
+
+  // Bloque de despliegue anterior, para fichas sin destinos estructurados.
+  function renderDespliegueBasico(d, conDiagrama) {
+    const pm2 = d.pm2 || {};
+    const comandos = conDiagrama ? [] : [d.comandoBuild, d.comandoStart].filter(tieneContenido);
+    const interior = datos([
+      { etiqueta: 'Rutas en el servidor', valor: d.servidorWeb, codigo: true },
+      { etiqueta: 'Proceso PM2', valor: pm2.proceso, codigo: true },
+      { etiqueta: 'Script', valor: pm2.script, codigo: true },
+      { etiqueta: 'Puerto', valor: d.puerto, codigo: true },
+      { etiqueta: 'Evidencia en el repositorio', valor: d.evidencia, codigo: true }
+    ]) + (comandos.length ? '<div><p class="despliegue__sub">Comandos</p><pre><code>' + comandos.map(function (c) { return '<b>$</b> ' + esc(c); }).join('\n') + '</code></pre></div>' : '');
+    if (!tieneContenido(d.plataforma) && !interior) return '';
+    return '<div class="despliegue">' + (tieneContenido(d.plataforma) ? '<p class="despliegue__plataforma"><span class="antetitulo">Plataforma</span><strong>' + esc(d.plataforma) + '</strong></p>' : '') + interior + '</div>';
+  }
+
+  // Grupos de variables de entorno según su prefijo (el orden importa: el primero que coincide gana).
+  const GRUPOS_VARIABLES = [
+    ['Servidor', /^(NODE_ENV|PORT|FRONTEND_URL|VITE_API_URL)$/],
+    ['Base de datos', /^DB_/],
+    ['Correo', /^(MAIL_|SMTP_)/],
+    ['Reglas del rally', /^(RALLY_|COOLDOWN|CODE_|CHALLENGE_)/],
+    ['Sesiones y cuentas', /(JWT|SECRET|ADMIN|RESET|TOTP|TENANT|CLIENT_ID|APPLICATION_ID|DEV_)/],
+    ['Otras', /./]
+  ];
+
+  // Variables de entorno agrupadas por función; solo nombres.
+  function renderVariables(lista) {
+    const vars = conContenido(lista);
+    if (!vars.length) return '';
+    const grupos = GRUPOS_VARIABLES.map(function (g) { return { nombre: g[0], re: g[1], items: [] }; });
+    vars.forEach(function (v) { grupos.find(function (g) { return g.re.test(v); }).items.push(v); });
+    return sub('Variables de entorno', '<p class="sec__nota" style="margin-bottom:var(--sp-3)">Solo se listan los nombres; los valores viven en el servidor y nunca en el repositorio.</p>' +
+      '<div class="vars">' + grupos.filter(function (g) { return g.items.length; }).map(function (g) {
+        return '<div class="vars__grupo"><p class="vars__titulo">' + esc(g.nombre) + ' <span>' + g.items.length + '</span></p><ul>' +
+          g.items.map(function (v) { return '<li><code>' + esc(v) + '</code></li>'; }).join('') + '</ul></div>';
+      }).join('') + '</div>');
+  }
+
+  // Workflows de GitHub Actions (solo si no hay diagrama de despliegue).
+  function renderWorkflows(wf) {
+    return sub('Workflows de GitHub Actions', wf.length ? '<ul class="workflows">' + wf.map(function (w) {
+      return '<li class="workflow"><div class="workflow__cabeza"><strong>' + esc(w.nombre) + '</strong>' + (tieneContenido(w.disparador) ? '<code>' + esc(w.disparador) + '</code>' : '') + '</div>' +
+        (tieneContenido(w.automatiza) ? '<p>' + esc(w.automatiza) + '</p>' : '') + '</li>';
+    }).join('') + '</ul>' : '');
+  }
+
+  // Repositorios como tarjetas: nombre, commits destacados y rango de fechas.
+  function renderRepositorios(lista, base) {
+    const repos = conContenido(lista).filter(function (r) { return tieneContenido(r.nombre); });
+    if (!repos.length) return '';
+    return sub('Repositorios', '<ul class="repos">' + repos.map(function (r) {
+      const nombre = urlExterna(r.url) ? enlaceExterno(r.url, r.nombre) : esc(r.nombre);
+      const desde = fechaCorta(r.primerCommit);
+      const hasta = fechaCorta(r.ultimoCommit);
+      return '<li class="repo"><div class="repo__cabeza">' + logoTec('GitHub', base, 'repo__img') + '<p class="repo__nombre">' + nombre + '</p></div>' +
+        (tieneContenido(r.commits) ? '<p class="repo__commits"><strong>' + esc(num(r.commits)) + '</strong> commits</p>' : '') +
+        (desde || hasta ? '<p class="repo__fechas">' + esc(desde) + (hasta && hasta !== desde ? ' → ' + esc(hasta) : '') + (aFecha(r.ultimoCommit) ? ' de ' + aFecha(r.ultimoCommit).getFullYear() : '') + '</p>' : '') + '</li>';
+    }).join('') + '</ul>' + (tieneContenido(repos[0].nota) ? '<p class="sec__nota">' + esc(repos[0].nota) + '</p>' : ''));
+  }
+
+  // Convención de commits con ejemplos reales del historial, al estilo de git log.
+  function renderCommits(h) {
+    const ejemplos = conContenido(h.ejemplosCommits);
+    if (!tieneContenido(h.convencionCommits) && !ejemplos.length) return '';
+    const linea = function (c) {
+      const m = /^([a-z]+)(\([^)]*\))?(!)?:\s*(.*)$/.exec(c.mensaje || '');
+      const tipo = m ? m[1] : '';
+      return '<li class="gitlog__fila"><code class="gitlog__hash">' + esc(c.hash || '') + '</code>' +
+        (tipo ? '<span class="gitlog__tipo gitlog__tipo--' + esc(tipo) + '">' + esc(tipo) + '</span>' : '') +
+        '<span class="gitlog__msg">' + (m && m[2] ? '<b>' + esc(m[2]) + '</b> ' : '') + esc(m ? m[4] : c.mensaje) + '</span>' +
+        (tieneContenido(c.fecha) ? '<time class="gitlog__fecha" datetime="' + esc(c.fecha) + '">' + esc(fechaCorta(c.fecha)) + '</time>' : '') + '</li>';
+    };
+    return sub('Convención de commits', parrafos(h.convencionCommits, 'sec__texto') +
+      (ejemplos.length ? '<div class="gitlog"><p class="gitlog__cabeza"><span aria-hidden="true">●●●</span> git log --oneline · ejemplos reales</p><ul>' + ejemplos.map(linea).join('') + '</ul></div>' : ''));
+  }
+
+  /* ---------------------------------------------------------------------
+   * Diagramas de arquitectura (carrusel de vistas)
+   * ------------------------------------------------------------------- */
+
+  // Vista de contexto: carriles de usuarios → cliente → servidor → datos, unidos por conectores rotulados.
+  function vistaContexto(c, base) {
+    const cols = conContenido(c.columnas);
+    if (!cols.length) return '';
+    const conectores = c.conectores || [];
+    let html = '';
+    cols.forEach(function (col, i) {
+      html += '<div class="dg-carril dg-carril--' + i + '"><p class="dg-carril__titulo">' + esc(col.titulo) + '</p>' +
+        conContenido(col.nodos).map(function (n) {
+          return '<div class="dg-nodo' + (n.tipo ? ' dg-nodo--' + esc(n.tipo) : '') + '"><p class="dg-nodo__nombre">' + esc(n.nombre) + '</p>' +
+            (tieneContenido(n.detalle) ? '<p class="dg-nodo__detalle">' + esc(n.detalle) + '</p>' : '') +
+            (conContenido(n.etiquetas).length ? '<ul class="dg-nodo__etiquetas">' + conContenido(n.etiquetas).map(function (e) {
+              return '<li>' + (archivoLogo(e) ? logoTec(e, base, 'dg-logo') : '') + esc(e) + '</li>';
+            }).join('') + '</ul>' : '') +
+            (tieneContenido(n.aloja) ? '<p class="dg-nodo__aloja"><span aria-hidden="true">⌂</span> ' + esc(n.aloja) + '</p>' : '') + '</div>';
+        }).join('') + '</div>';
+      if (i < cols.length - 1) {
+        html += '<div class="dg-conector" role="presentation"><span class="dg-conector__linea" aria-hidden="true"></span>' +
+          (tieneContenido(conectores[i]) ? '<span class="dg-conector__rotulo">' + esc(conectores[i]) + '</span>' : '') + '</div>';
+      }
+    });
+    const plantilla = 'repeat(' + (cols.length - 1) + ', minmax(0, 1fr) 4.75rem) minmax(0, 1fr)';
+    return '<div class="dg-contexto" style="grid-template-columns:' + plantilla + '">' + html + '</div>' +
+      (tieneContenido(c.nota) ? '<p class="sec__nota dg-nota">' + esc(c.nota) + '</p>' : '');
+  }
+
+  // Vista de flujo: secuencia numerada de una petición real, coloreada por capa.
+  function vistaPeticion(f) {
+    const pasos = conContenido(f.pasos);
+    if (!pasos.length) return '';
+    const capas = { cliente: 'Cliente', seguridad: 'Seguridad', aplicacion: 'Aplicación', datos: 'Datos' };
+    const leyenda = Object.keys(capas).filter(function (k) { return pasos.some(function (x) { return x.capa === k; }); });
+    return (tieneContenido(f.titulo) ? '<p class="dg-escenario"><span>Escenario</span> ' + esc(f.titulo) + '</p>' : '') +
+      '<ol class="dg-flujo">' + pasos.map(function (x, i) {
+        return '<li class="dg-paso dg-paso--' + esc(x.capa || 'aplicacion') + '"><span class="dg-paso__num" aria-hidden="true">' + (i + 1) + '</span>' +
+          '<div><p class="dg-paso__nombre">' + esc(x.nombre) + ' <span class="dg-paso__capa">' + esc(capas[x.capa] || '') + '</span></p>' +
+          (tieneContenido(x.detalle) ? '<p class="dg-paso__detalle">' + esc(x.detalle) + '</p>' : '') + '</div></li>';
+      }).join('') + '</ol>' +
+      '<ul class="dg-leyenda" aria-label="Capas">' + leyenda.map(function (k) { return '<li class="dg-paso--' + k + '"><span aria-hidden="true"></span>' + capas[k] + '</li>'; }).join('') + '</ul>';
+  }
+
+  // Vista de despliegue: etapas del pipeline, de la rama al servidor.
+  function vistaDespliegue(d) {
+    const etapas = conContenido(d.etapas);
+    if (!etapas.length) return '';
+    return '<ol class="dg-pipeline">' + etapas.map(function (e, i) {
+      return '<li class="dg-etapa"><p class="dg-etapa__num" aria-hidden="true">' + dos(i + 1) + '</p><p class="dg-etapa__nombre">' + esc(e.nombre) + '</p>' +
+        (tieneContenido(e.lugar) ? '<p class="dg-etapa__lugar">' + esc(e.lugar) + '</p>' : '') +
+        (conContenido(e.items).length ? '<ul>' + conContenido(e.items).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') + '</li>';
+    }).join('') + '</ol>' + (tieneContenido(d.nota) ? '<p class="sec__nota dg-nota">' + esc(d.nota) + '</p>' : '');
+  }
+
+  // Carrusel con las vistas disponibles; pestañas y flechas (activadas en activarCarruseles).
+  function renderDiagramas(p, base) {
+    const d = p.diagramas || {};
+    const vistas = [
+      { id: 'contexto', titulo: 'Contexto', subtitulo: 'Qué piezas hay y cómo se comunican', html: d.contexto ? vistaContexto(d.contexto, base) : '' },
+      { id: 'peticion', titulo: 'Flujo de una petición', subtitulo: 'Qué pasa por dentro', html: d.peticion ? vistaPeticion(d.peticion) : '' },
+      { id: 'despliegue', titulo: 'Despliegue', subtitulo: 'Cómo llega el código a producción', html: d.despliegue ? vistaDespliegue(d.despliegue) : '' }
+    ].filter(function (v) { return v.html; });
+    if (!vistas.length) return '';
+    const pref = 'dg-' + esc(p.id);
+    return '<div class="carrusel" data-carrusel>' +
+      '<div class="carrusel__barra"><div class="carrusel__pestanas" role="tablist" aria-label="Vistas de la arquitectura">' +
+      vistas.map(function (v, i) {
+        return '<button type="button" role="tab" class="carrusel__pestana" id="' + pref + '-t-' + v.id + '" aria-controls="' + pref + '-p-' + v.id + '" aria-selected="' + (i === 0) + '"' + (i ? ' tabindex="-1"' : '') + '>' +
+          '<span class="carrusel__n" aria-hidden="true">' + (i + 1) + '</span>' + esc(v.titulo) + '</button>';
+      }).join('') + '</div>' +
+      (vistas.length > 1 ? '<div class="carrusel__flechas"><button type="button" class="carrusel__flecha" data-dir="-1" aria-label="Vista anterior">‹</button>' +
+        '<span class="carrusel__contador" aria-hidden="true"><b>1</b> / ' + vistas.length + '</span>' +
+        '<button type="button" class="carrusel__flecha" data-dir="1" aria-label="Vista siguiente">›</button></div>' : '') + '</div>' +
+      vistas.map(function (v, i) {
+        return '<div class="carrusel__panel" role="tabpanel" id="' + pref + '-p-' + v.id + '" aria-labelledby="' + pref + '-t-' + v.id + '" tabindex="0"' + (i ? ' data-oculto' : '') + '>' +
+          '<p class="carrusel__subtitulo"><b>' + esc(v.titulo) + '.</b> ' + esc(v.subtitulo) + '</p>' + v.html + '</div>';
+      }).join('') + '</div>';
+  }
+
+  // Activa pestañas, flechas y teclado de los carruseles de diagramas.
+  function activarCarruseles(raizDom) {
+    (raizDom || document).querySelectorAll('[data-carrusel]').forEach(function (c) {
+      const tabs = Array.prototype.slice.call(c.querySelectorAll('[role="tab"]'));
+      const panels = Array.prototype.slice.call(c.querySelectorAll('[role="tabpanel"]'));
+      const contador = c.querySelector('.carrusel__contador b');
+      let actual = 0;
+      const ir = function (i, foco) {
+        actual = (i + tabs.length) % tabs.length;
+        tabs.forEach(function (t, k) {
+          t.setAttribute('aria-selected', String(k === actual));
+          t.tabIndex = k === actual ? 0 : -1;
+          panels[k].hidden = k !== actual;
+        });
+        if (contador) contador.textContent = String(actual + 1);
+        if (foco) tabs[actual].focus();
+      };
+      c.classList.add('carrusel--activo');
+      tabs.forEach(function (t, k) { t.addEventListener('click', function () { ir(k); }); });
+      c.querySelectorAll('.carrusel__flecha').forEach(function (b) {
+        b.addEventListener('click', function () { ir(actual + Number(b.getAttribute('data-dir'))); });
+      });
+      c.querySelector('[role="tablist"]').addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); ir(actual + 1, true); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); ir(actual - 1, true); }
+        if (e.key === 'Home') { e.preventDefault(); ir(0, true); }
+        if (e.key === 'End') { e.preventDefault(); ir(tabs.length - 1, true); }
+      });
+      let x0 = null;
+      c.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      c.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 60 && !e.target.closest('.dg-contexto, .dg-pipeline')) ir(actual + (dx < 0 ? 1 : -1));
+        x0 = null;
+      }, { passive: true });
+      ir(0);
+    });
+  }
 
   // Devuelve el HTML completo de una ficha: héroe del tema, índice y secciones.
   function renderProyecto(id, proyectos, base) {
@@ -1096,6 +1392,7 @@
     if (art) {
       construirIndiceLateral(art.querySelector('.con-indice__cuerpo'), art.querySelector('.indice-caja'), p ? tema(p).indice : '');
       activarGaleria(art);
+      activarCarruseles(art);
     }
     montar('#paginador', renderPaginador(id, d.proyectos, b));
   }
