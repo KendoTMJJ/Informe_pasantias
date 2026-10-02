@@ -313,6 +313,7 @@
     const total = principales(window.PROYECTOS).length;
     const extra = [
       { etiqueta: 'Programa académico', valor: g.programaAcademico },
+      { etiqueta: 'Director de Comunicaciones', valor: g.director },
       { etiqueta: 'Tutor empresarial', valor: (g.tutores || {}).empresarial },
       { etiqueta: 'Tutor académico', valor: (g.tutores || {}).academico }
     ].filter(function (d) { return tieneContenido(d.valor); });
