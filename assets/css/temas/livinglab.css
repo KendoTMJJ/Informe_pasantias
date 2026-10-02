@@ -53,8 +53,11 @@
   transform: rotate(-3deg);
 }
 
-.tema-livinglab .sello { border-radius: 999px; padding: var(--sp-5); }
-.tema-livinglab .sello img { transform: none; }
+.tema-livinglab .sellos { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--sp-3); }
+.tema-livinglab .sello { border-radius: 999px; padding: var(--sp-5) var(--sp-2); }
+.tema-livinglab .sello img { width: 5.5rem; height: 5.5rem; transform: none; }
+@media (max-width: 80rem) { .tema-livinglab .sellos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 40rem) { .tema-livinglab .sellos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .tema-livinglab .indice__marca { border-color: #b5d334; background: #b5d334; color: #121212; }
 
 @media (max-width: 56rem) {

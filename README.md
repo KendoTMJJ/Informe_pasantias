@@ -125,6 +125,18 @@ La paleta institucional está en las variables `--usta-*` al inicio de
 `assets/css/estilos.css`. Cada ficha redefine las variables `--p-*` en su archivo
 de `assets/css/temas/`, con los valores tomados del repositorio del proyecto.
 
+### Logos de tecnologías
+
+Los logos de `assets/img/tecnologias/` son de [Devicon](https://devicon.dev) (MIT)
+y [Simple Icons](https://simpleicons.org) v16.33.0 (CC0); `LICENCIAS.txt` dice de
+dónde sale cada uno. Para agregar uno de Simple Icons, descarga
+`https://cdn.jsdelivr.net/npm/simple-icons@16.33.0/icons/<slug>.svg`, añade
+`fill="#color"` a la etiqueta `<svg>` y registra el prefijo del nombre en la lista
+`LOGOS` de `app.js` (o indica la ruta en el campo `logo` de la tecnología). Las
+marcas siguen siendo de sus respectivos dueños.
+En cada ficha, el campo `stackPrincipal` de `data/proyectos.js` define qué
+tecnologías aparecen con logo en la sección Arquitectura.
+
 Nota: Firefox bloquea las fuentes de una carpeta superior cuando el sitio se
 abre con `file://`; en ese caso las fichas usan la fuente del sistema. Servido
 (GitHub Pages o `python -m http.server`) se ven con Poppins y Nunito.

@@ -6,7 +6,9 @@ Son marcas de sus respectivos dueños.
   php, jquery, bootstrap, html, css, javascript, python, fastapi, pandas, wordpress,
   eslint, pnpm, sass, github, cpanel
 - Simple Icons (CC0) — https://github.com/simple-icons/simple-icons
-  typeorm, prettier, pm2, passport, excel, mysql (coloreados con el color de marca)
+  typeorm, prettier, pm2, passport, excel, mysql, react, reactrouter, vite,
+  nodedotjs, swagger, jsonwebtokens, axios, postman, pwa, supabase, chartdotjs
+  (coloreados con el color de marca)
 - microsoft.svg: los cuatro cuadros de Microsoft, igual que en el botón de
   inicio de sesión de Gestión Docente.
 
