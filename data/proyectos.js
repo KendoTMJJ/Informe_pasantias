@@ -1075,7 +1075,7 @@ window.PROYECTOS = [
           nombre: "Dashboard de nómina",
           modulo: "Estadísticas Nómina",
           descripcion: "Analítica, liquidaciones, presupuesto y reportes de lo que ya se liquidó.",
-          vistas: ["Panel", "Nómina", "Liquidaciones", "Usuarios", "Seguridad"],
+          vistas: ["Nómina", "Liquidaciones", "Cargar archivos", "Usuarios", "Mi cuenta", "Seguridad"],
           backend: "estadisticas-nomina-back",
           modulosBackend: []
         },
@@ -1099,62 +1099,198 @@ window.PROYECTOS = [
     id: "nomina-dashboard",
     padre: "nomina",
     nombre: "Dashboard de nómina",
-    subtitulo: "Analítica de la nómina liquidada: panel, liquidaciones, presupuesto, reportes y usuarios con doble factor.",
+    subtitulo: "Analítica de la nómina liquidada: nómina, liquidaciones, presupuesto, reportes y usuarios con doble factor.",
     estado: "En producción",
     solicitante: "",
-    periodo: { inicio: "2026-08-31", fin: "" },
+    periodo: { inicio: "2026-08-31", fin: "2026-09-30" }, // primer y último commit de sus repositorios
     horasAproximadas: null,
-    proposito: "",
+    // POR CONFIRMAR: redactado a partir del código (parsers de Excel, reporte y comentarios del backend).
+    proposito: "Talento humano recibe la nómina y las liquidaciones de cada mes como archivos de Excel que exporta el sistema de la universidad, uno por categoría de personal. Consolidarlos, compararlos con el presupuesto y armar el reporte de pagos era trabajo manual sobre hojas de cálculo sueltas.\n\nEl dashboard recibe esos mismos archivos tal como salen del sistema, los guarda por periodo y categoría, y a partir de ahí muestra totales, evolución mensual, desviación frente al presupuesto por centro de costos y genera el reporte de automatización de pagos en Excel. Como maneja salarios, el acceso exige contraseña y un segundo factor.",
     descripcion: "Módulo «Estadísticas Nómina» de la plataforma: consulta y analítica de lo liquidado, con su propia API y acceso protegido con segundo factor.",
-    queSeHizo: [""],
-    identidad: { tema: "nomina", color: "#fdc300", numero: "06.1", etiqueta: "Estadísticas Nómina", nombreCorto: "Dashboard de nómina" },
-    capas: [
-      { rol: "Cliente", nombre: "Angular 22", detalle: "nomina-front-end · /estadisticas", logos: ["assets/img/tecnologias/angular.svg"] },
-      { rol: "API REST", nombre: "NestJS 11", detalle: "estadisticas-nomina-back", logos: ["assets/img/tecnologias/nestjs.svg"] },
-      { rol: "Datos", nombre: "TypeORM · mysql2", detalle: "con migraciones" }
+    queSeHizo: [
+      "Carga de los Excel de nómina y de liquidaciones por categoría (administrativos, docentes, cátedra, aprendices y posgrado), validando que el nombre del archivo corresponda a la categoría elegida.",
+      "Carga del archivo de proyección de presupuesto, leído hoja por hoja y mes por mes por centro de costos.",
+      "Vistas de nómina y de liquidaciones con filtros por mes, categoría, centro de costos y cargo, resumen por categoría y evolución mensual en gráficas.",
+      "Comparación entre lo presupuestado y lo real por centro de costos, ordenada por desviación.",
+      "Reporte de automatización de pagos en Excel, con una hoja por año y los rubros por documento de nómina.",
+      "Usuarios con roles, inicio de sesión con segundo factor (TOTP), códigos de recuperación y auditoría de seguridad."
     ],
+    identidad: { tema: "nomina", color: "#fdc300", numero: "06.1", etiqueta: "Estadísticas Nómina", nombreCorto: "Dashboard de nómina" },
+    // Tecnologías principales con logo en la sección Arquitectura (la versión se toma de tecnologias).
+    stackPrincipal: [
+      { nombre: "Angular", rol: "Frontend compartido de la plataforma" },
+      { nombre: "Chart.js", rol: "Gráficas del dashboard" },
+      { nombre: "TypeScript", rol: "Tipado en frontend y backend" },
+      { nombre: "NestJS", rol: "API REST por módulos" },
+      { nombre: "TypeORM", rol: "Entidades y migraciones" },
+      { nombre: "MariaDB", rol: "Base de datos" },
+      { nombre: "GitHub Actions", rol: "Compilación automática" },
+      { nombre: "cPanel", rol: "Alojamiento" },
+      { nombre: "PM2", rol: "Proceso de la API" }
+    ],
+    // Diagramas de arquitectura (carrusel de la sección Arquitectura).
+    diagramas: {
+      contexto: {
+        columnas: [
+          { titulo: "Usuarios", nodos: [
+            { nombre: "Administrador", detalle: "Carga los archivos, consulta y gestiona los usuarios.", etiquetas: ["ADMIN"] },
+            { nombre: "Usuario", detalle: "Consulta nómina y liquidaciones y descarga el reporte.", etiquetas: ["USUARIO"] },
+            { nombre: "Desarrollador", detalle: "Reinicia el segundo factor de otras cuentas y revisa la auditoría.", etiquetas: ["DESARROLLADOR"] }
+          ] },
+          { titulo: "Cliente", nodos: [
+            { nombre: "SPA nomina-front-end", detalle: "Módulo /estadisticas dentro del frontend que comparte con Novedades de Nómina.", etiquetas: ["Angular", "Chart.js"], aloja: "cPanel · sitio estático" }
+          ] },
+          { titulo: "Servidor", nodos: [
+            { nombre: "API estadisticas-nomina-back", detalle: "API REST propia, separada de la de Novedades.", etiquetas: ["NestJS"], aloja: "cPanel · proceso PM2" }
+          ] },
+          { titulo: "Datos y servicios", nodos: [
+            { nombre: "MariaDB", detalle: "Nómina, liquidaciones y presupuesto por periodo, más usuarios y auditoría.", etiquetas: ["TypeORM"] },
+            { nombre: "Correo (SMTP)", detalle: "Envío del enlace de recuperación de contraseña.", etiquetas: ["Nodemailer"] }
+          ] }
+        ],
+        conectores: ["Navegador · HTTPS", "REST · JSON · cookie de sesión httpOnly", "TypeORM · SMTP"],
+        nota: "El frontend es uno solo para los dos desarrollos de la plataforma, pero cada uno llama a su propia API (estadisticas-api y novedades-api) y tiene su propia base de datos."
+      },
+      peticion: {
+        titulo: "Un administrador carga el Excel de nómina del mes",
+        pasos: [
+          { capa: "cliente", nombre: "Panel «Cargar archivos»", detalle: "Elige la categoría, adjunta el .xlsx y envía POST /nomina/upload con la cookie de sesión." },
+          { capa: "seguridad", nombre: "helmet y CORS", detalle: "Se añaden cabeceras de seguridad y solo se acepta el origen configurado en FRONTEND_URL." },
+          { capa: "seguridad", nombre: "JwtGuard", detalle: "Lee la cookie access_token, que solo existe después de la contraseña y el segundo factor; sin ella responde 401." },
+          { capa: "seguridad", nombre: "RolesGuard", detalle: "Solo el rol ADMIN puede cargar archivos; cualquier otro rol recibe 403." },
+          { capa: "aplicacion", nombre: "FileInterceptor", detalle: "Acepta solo hojas de cálculo de hasta 20 MB." },
+          { capa: "aplicacion", nombre: "Validación del nombre", detalle: "El nombre del archivo debe corresponder a nómina y a la categoría elegida, para no subir el archivo de una categoría en otra." },
+          { capa: "aplicacion", nombre: "PayrollService", detalle: "Lee las columnas del Excel (tercero, contrato, periodo, centro de costos, cargo, básico, neto) y actualiza o crea cada registro." },
+          { capa: "datos", nombre: "TypeORM → MariaDB", detalle: "El archivo reemplaza por completo su periodo y categoría: quien ya no aparece en él se elimina." },
+          { capa: "cliente", nombre: "Respuesta", detalle: "La API responde con los registros procesados y los eliminados, y el panel lo muestra." }
+        ]
+      },
+      despliegue: {
+        etapas: [
+          { nombre: "Desarrollo", lugar: "feature/* → develop", items: ["Cada desarrollo trabaja en su rama y vuelve por pull request."] },
+          { nombre: "Liberación", lugar: "→ deploy", items: ["El push a deploy dispara el workflow."] },
+          { nombre: "Compilación", lugar: "GitHub Actions · build-cpanel.yml", items: ["pnpm install --frozen-lockfile", "Frontend: ng build", "Backend: nest build y verificación de dist/main.js"] },
+          { nombre: "Artefacto", lugar: "rama cpanel-dist", items: ["Solo el resultado compilado y el .cpanel.yml", "Se genera sola; nunca se edita a mano"] },
+          { nombre: "Producción", lugar: "cPanel · Git Version Control", items: ["rsync al destino, preservando el .env", "Backend: dependencias de producción con el lockfile", "Backend: migraciones y reinicio con PM2"] }
+        ],
+        nota: "En el backend, node_modules no viaja en el artefacto: el servidor instala las dependencias de producción con el lockfile, porque bcrypt se compila para esa máquina. El script deja su propio registro en el servidor, ya que el de cPanel solo dice si la tarea terminó."
+      }
+    },
     teoria: {
-      arquitectura: "", organizacion: "", flujoPeticion: "",
-      autenticacion: "JWT con segundo factor por código temporal (TOTP) y códigos de recuperación (variables JWT_SECRET y TOTP_ENCRYPTION_KEY).",
-      manejoErrores: "", documentacionApi: ""
+      arquitectura: "", flujoPeticion: "", autenticacion: "", manejoErrores: "", documentacionApi: "",
+      organizacion: "El backend tiene un módulo por dominio (nómina, liquidaciones, presupuesto, reportes, usuarios, autenticación y seguridad); nómina y liquidaciones comparten un mismo lector de Excel en src/common. En el frontend, el módulo vive en features/estadisticas con su propio layout, guardas de sesión y servicios, separado de Novedades."
     },
     modulos: [
-      { nombre: "auth", responsabilidad: "", entidades: "", endpoints: "" }, { nombre: "user", responsabilidad: "", entidades: "", endpoints: "" },
-      { nombre: "payroll", responsabilidad: "", entidades: "", endpoints: "" }, { nombre: "liquidaciones", responsabilidad: "", entidades: "", endpoints: "" },
-      { nombre: "presupuesto", responsabilidad: "", entidades: "", endpoints: "" }, { nombre: "reportes", responsabilidad: "", entidades: "", endpoints: "" },
-      { nombre: "seguridad", responsabilidad: "", entidades: "", endpoints: "" }, { nombre: "mail", responsabilidad: "", entidades: "", endpoints: "" }
+      { nombre: "auth", responsabilidad: "Inicio de sesión en dos pasos, segundo factor (activación, verificación y códigos de recuperación), sesión actual y recuperación de contraseña.", entidades: "PasswordResetToken, TwoFactorRecoveryCode, SecurityAuditLog", endpoints: "POST /auth/login · /2fa/setup · /2fa/activate · /2fa/verify · /2fa/recovery · /2fa/recovery-codes · /logout · /forgot-password · /reset-password/:token · GET /auth/me" },
+      { nombre: "user", responsabilidad: "Usuarios del dashboard, cambio y restablecimiento de contraseña.", entidades: "User", endpoints: "CRUD /user · PATCH /user/:id/change-password · /:id/reset-password" },
+      { nombre: "payroll", responsabilidad: "Carga de la nómina por categoría y consultas: personas, centros de costos, cargos, resumen por categoría, evolución mensual y periodos.", entidades: "NominaContrato", endpoints: "POST /nomina/upload · GET /nomina/personas · /centros-costos · /cargos · /resumen-categorias · /evolucion-mensual · /periodos · DELETE /nomina/periodo/:periodo" },
+      { nombre: "liquidaciones", responsabilidad: "Las mismas operaciones para las liquidaciones de contrato.", entidades: "LiquidacionContrato", endpoints: "POST /liquidaciones/upload · GET (6 consultas) · DELETE /liquidaciones/periodo/:periodo" },
+      { nombre: "presupuesto", responsabilidad: "Carga de la proyección de presupuesto y consultas por centro de costos, categoría y mes.", entidades: "PresupuestoCentroCosto", endpoints: "POST /presupuesto/upload · GET /presupuesto/centros-costos · /categorias · /evolucion-mensual · /periodos" },
+      { nombre: "reportes", responsabilidad: "Reporte de automatización de pagos en Excel.", entidades: "—", endpoints: "GET /reportes/automatizacion-pagos" },
+      { nombre: "seguridad", responsabilidad: "Reinicio del segundo factor de otras cuentas y auditoría (solo DESARROLLADOR).", entidades: "SecurityAuditLog", endpoints: "GET /seguridad/usuarios · POST /seguridad/usuarios/:id/reset-2fa · GET /seguridad/auditoria" }
     ],
-    modeloDatos: { motor: "", orm: "TypeORM", migraciones: "TypeORM (src/migrations)", seeds: "", entidades: [{ nombre: "", campos: "", relaciones: "" }] },
+    modeloDatos: {
+      motor: "MariaDB",
+      orm: "TypeORM",
+      migraciones: "3 migraciones versionadas; synchronize desactivado",
+      seeds: "Cuentas ADMIN y DESARROLLADOR iniciales desde variables de entorno",
+      entidades: [
+        { nombre: "NominaContrato", campos: "tercero, nombre, contrato, periodo, categoría, centro de costos, cargo, ingreso y retiro, salario básico, neto", relaciones: "N:1 User (quien cargó) · único por tercero, contrato, periodo y categoría" },
+        { nombre: "LiquidacionContrato", campos: "los mismos campos que NominaContrato, con la categoría de docentes de posgrado", relaciones: "N:1 User (quien cargó)" },
+        { nombre: "PresupuestoCentroCosto", campos: "categoría, centro de costos, periodo, sueldo mensual presupuestado", relaciones: "N:1 User (quien cargó) · único por categoría, centro y periodo" },
+        { nombre: "User", campos: "nombre, correo, contraseña (bcrypt), rol, activo, último acceso, secreto 2FA cifrado, intentos fallidos y bloqueo, versión de sesión", relaciones: "1:N PasswordResetToken · 1:N TwoFactorRecoveryCode" },
+        { nombre: "TwoFactorRecoveryCode", campos: "hash del código, fecha de uso", relaciones: "N:1 User" },
+        { nombre: "SecurityAuditLog", campos: "acción, IP, fecha", relaciones: "N:1 User (actor) · N:1 User (afectado)" },
+        { nombre: "PasswordResetToken", campos: "hash del token, expiración, usado", relaciones: "N:1 User" }
+      ]
+    },
     tecnologias: [
-      { nombre: "Angular", version: "22.1", uso: "", categoria: "frontend", logo: "assets/img/tecnologias/angular.svg" },
-      { nombre: "Chart.js", version: "4.5", uso: "Gráficas del panel", categoria: "frontend" },
-      { nombre: "NestJS", version: "11", uso: "", categoria: "backend", logo: "assets/img/tecnologias/nestjs.svg" },
-      { nombre: "TypeORM", version: "1.1", uso: "", categoria: "backend", logo: "assets/img/tecnologias/typeorm.svg" },
+      { nombre: "Angular", version: "22.1", uso: "", categoria: "frontend" },
+      { nombre: "TypeScript", version: "6.0", uso: "Frontend (el backend usa la 5.7)", categoria: "frontend" },
+      { nombre: "Chart.js", version: "4.5", uso: "Gráficas del dashboard", categoria: "frontend" },
+      { nombre: "ng2-charts", version: "10", uso: "Chart.js como componentes de Angular", categoria: "frontend" },
+      { nombre: "NestJS", version: "11", uso: "", categoria: "backend" },
+      { nombre: "TypeORM", version: "1.1", uso: "", categoria: "backend" },
+      { nombre: "Passport JWT", version: "4.0", uso: "Sesión por cookie", categoria: "backend" },
+      { nombre: "otpauth", version: "9.5", uso: "Códigos TOTP del segundo factor", categoria: "backend" },
+      { nombre: "qrcode", version: "1.5", uso: "QR para vincular la app autenticadora", categoria: "backend" },
+      { nombre: "@nestjs/throttler", version: "6.5", uso: "Límite de intentos", categoria: "backend" },
+      { nombre: "helmet", version: "8.3", uso: "Cabeceras de seguridad", categoria: "backend" },
+      { nombre: "bcrypt", version: "6.0", uso: "Hash de contraseñas", categoria: "backend" },
+      { nombre: "class-validator", version: "0.15", uso: "Validación de DTOs", categoria: "backend" },
+      { nombre: "SheetJS (xlsx)", version: "0.18", uso: "Lectura de los Excel cargados", categoria: "backend" },
+      { nombre: "ExcelJS", version: "4.4", uso: "Reporte de automatización de pagos", categoria: "backend" },
+      { nombre: "Nodemailer", version: "9", uso: "Correos de recuperación", categoria: "backend" },
+      { nombre: "Swagger", version: "11", uso: "Documentación en /api/docs, fuera de producción", categoria: "backend" },
+      { nombre: "MariaDB", version: "", uso: "", categoria: "bd" },
       { nombre: "mysql2", version: "3.23", uso: "", categoria: "bd" },
-      { nombre: "GitHub Actions", version: "", uso: "", categoria: "devops", logo: "assets/img/tecnologias/githubactions.svg" },
-      { nombre: "PM2", version: "", uso: "", categoria: "devops", logo: "assets/img/tecnologias/pm2.svg" },
-      { nombre: "pnpm", version: "", uso: "", categoria: "herramienta", logo: "assets/img/tecnologias/pnpm.svg" }
+      { nombre: "GitHub Actions", version: "", uso: "", categoria: "devops" },
+      { nombre: "cPanel", version: "", uso: "", categoria: "devops" },
+      { nombre: "PM2", version: "", uso: "", categoria: "devops" },
+      { nombre: "Docker Compose", version: "", uso: "MariaDB y API en local", categoria: "devops" },
+      { nombre: "ESLint", version: "9", uso: "", categoria: "herramienta" },
+      { nombre: "Prettier", version: "3", uso: "", categoria: "herramienta" },
+      { nombre: "pnpm", version: "11", uso: "", categoria: "herramienta" }
     ],
     herramientas: {
-      convencionCommits: "", estrategiaRamas: "",
-      actions: [{ nombre: "Build CPanel (estadísticas back)", disparador: "push a deploy", jobs: "build", automatiza: "Compila la API y publica el dist en cpanel-dist." }],
-      otras: [""]
+      convencionCommits: "Conventional Commits en la mayoría de los commits (feat, fix, con ámbito opcional como feat(seguridad)); los commits de deploy los genera el workflow.",
+      estrategiaRamas: "",
+      actions: [{ nombre: "", disparador: "", jobs: "", automatiza: "" }],
+      otras: [""],
+      // Commits reales de los dos repositorios (git log), del más reciente al más antiguo.
+      ejemplosCommits: [
+        { hash: "065ade6", fecha: "2026-09-30", mensaje: "feat: enhance cPanel deployment script with logging and error handling" },
+        { hash: "910b77c", fecha: "2026-09-29", mensaje: "feat(seguridad): implement 2FA management and recovery codes functionality" },
+        { hash: "77fee58", fecha: "2026-09-29", mensaje: "feat: implement two-factor authentication (2FA) system with recovery codes and security audit logs" },
+        { hash: "b9e8cf2", fecha: "2026-09-29", mensaje: "fix: corregir ruta de despliegue en script cpanel-deploy.sh" },
+        { hash: "876d5de", fecha: "2026-09-22", mensaje: "feat: agregar filtros de búsqueda y mejoras en la visualización de resultados en estadísticas" },
+        { hash: "bc6d199", fecha: "2026-09-22", mensaje: "feat: integrate Presupuesto module with database and API" },
+        { hash: "2f9c8d7", fecha: "2026-09-14", mensaje: "feat: agregar módulo de presupuesto y mejoras en paneles de estadísticas" }
+      ]
     },
     gestionAgil: { historiasUsuario: null, sprints: null },
     despliegue: {
       plataforma: "cPanel",
-      evidencia: "estadisticas-nomina-back: .github/workflows/build-cpanel.yml · deploy/cpanel-deploy.sh",
-      pm2: { proceso: "api-EstadisticasNomina", script: "main.js", modo: "", instancias: "", logs: "" },
-      servidorWeb: "Frontend compartido: public_html/NominaTH/browser/",
-      comandoBuild: "pnpm build",
-      comandoStart: "pm2 start main.js --name api-EstadisticasNomina",
+      evidencia: ".github/workflows/build-cpanel.yml (en los dos repositorios) · deploy/cpanel-deploy.sh",
+      servidor: "Servidor de la universidad",
+      // Un destino por pieza desplegada (mapa del servidor en "Despliegue y versiones").
+      destinos: [
+        { capa: "Frontend", tecnologia: "Angular", nombre: "nomina-front-end", ruta: "public_html/NominaTH/browser/", servidor: "Apache · archivos estáticos (compartido con Novedades)" },
+        { capa: "API", tecnologia: "NestJS", nombre: "estadisticas-nomina-back", ruta: "/home/delegados/BackendNomina", proceso: "api-EstadisticasNomina", script: "main.js" }
+      ],
+      pm2: { proceso: "", script: "", modo: "", instancias: "", logs: "" },
+      servidorWeb: "",
+      comandoBuild: "",
+      comandoStart: "",
       variablesEntorno: ["PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_PASSWORD", "DB_NAME", "FRONTEND_URL", "JWT_SECRET", "SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USER", "SMTP_PASSWORD", "SMTP_FROM", "ADMIN_NAME", "ADMIN_EMAIL", "ADMIN_PASSWORD", "TOTP_ENCRYPTION_KEY", "DEV_NAME", "DEV_EMAIL", "DEV_PASSWORD"],
-      puerto: "", cors: "FRONTEND_URL"
+      puerto: "",
+      cors: ""
     },
-    calidad: { pruebas: "", rendimiento: [""], accesibilidad: [""], seguridad: [""] },
-    hitos: [{ fecha: "", descripcion: "" }],
+    calidad: {
+      pruebas: "",
+      rendimiento: [""],
+      accesibilidad: [""],
+      seguridad: [
+        "Inicio de sesión en dos pasos: la contraseña solo entrega una cookie temporal de 10 minutos; la sesión de 8 horas (cookie httpOnly y sameSite=strict) llega después del código TOTP.",
+        "Secretos del segundo factor cifrados con AES-256-GCM en la base de datos; la API no arranca sin JWT_SECRET ni la clave de cifrado.",
+        "10 códigos de recuperación de un solo uso, guardados como hash.",
+        "Bloqueo de 15 minutos tras 5 códigos erróneos; máximo 5 intentos por hora en el inicio de sesión y la recuperación de contraseña.",
+        "Auditoría de las acciones sensibles: activación, reinicio y bloqueo del segundo factor y uso o regeneración de códigos.",
+        "Rol DESARROLLADOR separado: reinicia el segundo factor, pero no ve nómina, liquidaciones, presupuesto ni reportes, y el administrador no puede crearlo.",
+        "Swagger desactivado en producción."
+      ]
+    },
+    hitos: [
+      { fecha: "2026-08-31", descripcion: "Primera versión del backend y del frontend." },
+      { fecha: "2026-09-08", descripcion: "Corrección del desfase en las estadísticas cargadas desde Excel." },
+      { fecha: "2026-09-14", descripcion: "Módulo de presupuesto y mejoras en los paneles del frontend." },
+      { fecha: "2026-09-22", descripcion: "Presupuesto integrado con la base de datos y la API; filtros de búsqueda en las vistas." },
+      { fecha: "2026-09-23", descripcion: "El módulo de estadísticas se integra al frontend principal de la plataforma (pull request #2)." },
+      { fecha: "2026-09-29", descripcion: "Segundo factor con códigos de recuperación y auditoría; archivos de despliegue para cPanel." },
+      { fecha: "2026-09-30", descripcion: "Despliegue automático en cPanel, con registro propio del script de despliegue." }
+    ],
     repositorios: [
-      { nombre: "nomina-front-end", url: "https://github.com/WldySandoval1/nomina-front-end", commits: 13, primerCommit: "2026-08-31", ultimoCommit: "2026-09-30" },
+      { nombre: "nomina-front-end", url: "https://github.com/WldySandoval1/nomina-front-end", commits: 13, primerCommit: "2026-08-31", ultimoCommit: "2026-09-30", nota: "El frontend es compartido con Novedades de Nómina; los conteos son de la rama deploy de cada repositorio." },
       { nombre: "estadisticas-nomina-back", url: "https://github.com/WldySandoval1/estadisticas-nomina-back", commits: 8, primerCommit: "2026-08-31", ultimoCommit: "2026-09-30" }
     ],
     urlProduccion: "https://nomina.santototunja.edu.co/estadisticas/login",

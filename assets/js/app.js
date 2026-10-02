@@ -1219,7 +1219,7 @@
     ['prettier', 'prettier'], ['pwa', 'pwa'], ['supabase', 'supabase'], ['vitest', 'vitest'], ['php', 'php'],
     ['python', 'python'], ['fastapi', 'fastapi'], ['pandas', 'pandas'], ['sass', 'sass'], ['scss', 'sass'],
     ['bootstrap', 'bootstrap'], ['jquery', 'jquery'], ['wordpress', 'wordpress'], ['html', 'html'], ['css', 'css'],
-    ['excel', 'excel'], ['microsoft', 'microsoft']
+    ['excel', 'excel'], ['microsoft', 'microsoft'], ['chart.js', 'chartdotjs']
   ];
 
   // Devuelve el archivo del logo de una tecnología, o "" si no hay.
