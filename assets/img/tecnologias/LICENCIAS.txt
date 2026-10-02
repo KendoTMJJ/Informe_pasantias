@@ -1,0 +1,15 @@
+Logos de tecnologías usados para identificar las herramientas de cada proyecto.
+Son marcas de sus respectivos dueños.
+
+- Devicon (MIT) — https://github.com/devicons/devicon
+  angular, typescript, nestjs, mariadb, githubactions, docker, vitest, jest,
+  php, jquery, bootstrap, html, css, javascript, python, fastapi, pandas, wordpress,
+  eslint, pnpm, sass, github, cpanel
+- Simple Icons (CC0) — https://github.com/simple-icons/simple-icons
+  typeorm, prettier, pm2, passport, excel, mysql (coloreados con el color de marca)
+- microsoft.svg: los cuatro cuadros de Microsoft, igual que en el botón de
+  inicio de sesión de Gestión Docente.
+
+Íconos animados (assets/js/lordicons.js): Lordicon — https://lordicon.com
+Son los mismos que usan las portadas de las mesas de ayuda; los reproduce
+lottie-web 5.12.2 (MIT), guardado en assets/js/vendor/lottie.min.js.

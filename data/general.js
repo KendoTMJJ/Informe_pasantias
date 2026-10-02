@@ -17,7 +17,7 @@ window.GENERAL = {
   institucion: "Universidad Santo Tomás",
   seccional: "Tunja",
   dependencia: "Dirección de Comunicaciones",
-  programaAcademico: "",
+  programaAcademico: "Ingeniería de Sistemas",
   anio: 2026,
 
   // Ruta relativa a la raíz. Vacía = se muestra el marcador provisional.
@@ -29,24 +29,24 @@ window.GENERAL = {
   ],
 
   tutores: {
-    empresarial: "",
-    academico: "",
+    empresarial: "Iván Darío Gonzales Rubio",
+    academico: "Héctor Mauricio Bravo Cepeda",
   },
 
   periodo: {
     inicio: "2026-06-01",
-    fin: "2 de octubre de 2026", // fecha exacta de cierre en octubre
-    texto: "1 de junio – octubre de 2026",
+    fin: "2 de octubre de 2026",
+    texto: "1 de junio – 2 de octubre de 2026",
   },
 
   indicadores: {
-    micrositiosIntervenidos: "16+",
+    micrositiosIntervenidos: "20+", // mínimo conocido; fueron más, sin recuento exacto
   },
 
   // Cada elemento es un párrafo.
   resumenEjecutivo: [
-    "Este informe documenta la pasantía de desarrollo de software realizada por Julián Tobito y Wldy Sandoval en la Dirección de Comunicaciones de la Universidad Santo Tomás, seccional Tunja, entre el 1 de junio y octubre de 2026, con una intensidad prevista de 640 horas.",
-    "El trabajo se organizó en siete frentes: la intervención de los micrositios institucionales de más de dieciséis programas académicos; la landing de CAMINA-Living-Lab; dos rallies sobre una misma base de código —el Pasaporte Neotomasino, rally de bienvenida para estudiantes nuevos, y el Rally Living Lab, festival del mapa de soluciones de CAMINA—; ReservaLab, un sistema de reserva de laboratorios planificado en 31 historias de usuario distribuidas en nueve sprints; la Plataforma de Nómina, con un dashboard de estadísticas y la pre-nómina de talento humano; y las mesas de ayuda creadas en la universidad.",
+    "Este informe documenta la pasantía de desarrollo de software realizada por Julián Tobito y Wldy Sandoval en la Dirección de Comunicaciones de la Universidad Santo Tomás, seccional Tunja, entre el 1 de junio y el 2 de octubre de 2026, con una intensidad de 640 horas cumplidas en su totalidad.",
+    "El trabajo se organizó en ocho frentes: la intervención de los micrositios institucionales de más de veinte programas académicos; la landing de CAMINA-Living-Lab; dos rallies sobre una misma base de código —el Pasaporte Neotomasino, rally de bienvenida para estudiantes nuevos, y el Rally Living Lab, festival del mapa de soluciones de CAMINA—; ReservaLab, un sistema de reserva de laboratorios planificado en 31 historias de usuario distribuidas en nueve sprints; la Plataforma de Nómina, con un dashboard de estadísticas y la pre-nómina de talento humano; las mesas de ayuda creadas en la universidad; y Gestión Docente, la plataforma de formación permanente que lleva el control de cursos, horas y constancias del cuerpo docente.",
     "Para cada frente, el informe presenta el propósito, la arquitectura, el modelo de datos, las tecnologías, el control de versiones y el esquema de alojamiento y despliegue. Se complementa con el marco metodológico común a todos los desarrollos, el cronograma de dedicación horaria y las conclusiones del proceso.",
   ],
 
