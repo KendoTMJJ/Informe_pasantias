@@ -1,44 +1,56 @@
-/* Tema Mesas de ayuda — identidad institucional (noche y amarillo USTA) con
-   un motivo de tickets de soporte. */
+/* Tema Mesas de ayuda — paleta tomada de los encabezados de las mesas en
+   producción (headInvestigacion.html y headRQS.html): azul índigo #222256,
+   cian #01abb7 y amarillo lima #d7cb03 de la mesa de Investigación, con el
+   azul #003b70 de RQS. Cada mesa conserva sus propios colores en el héroe y
+   en sus tarjetas (los toma de data/proyectos.js).
+
+   Los componentes compartidos (héroe, tarjetas, rueda, recorrido…) están en
+   ../ficha-viva.css; aquí solo va la paleta. */
 
 .tema-mesas {
-  --p-fondo: #f6f7f9;
-  --p-titulo: #00336a;
-  --p-num: #004f9f;
+  --p-fondo: #f6f7fa;
+  --p-superficie: #ffffff;
+  --p-superficie-2: #eef0f6;
+  --p-texto: #14152e;
+  --p-suave: #5a5f7a;
+  --p-titulo: #222256;
+  --p-primario: #222256;
+  --p-sobre-primario: #ffffff;
+  --p-acento: #d7cb03;
+  --p-sobre-acento: #222256;
+  --p-oscuro: #222256;
+  --p-oscuro-2: #14143a;
+  --p-etiqueta-oscuro: #d7cb03;
+  --p-suave-oscuro: #c8cae6;
+  --p-num: #003b70;
+  --p-borde: #e5e7ef;
+  --p-radio: 18px;
+  --p-radio-chip: 9px;
+  --p-radio-capa: 12px;
+  --p-fuente: var(--f-titulos);
   --p-fuente-titulos: var(--f-titulos);
-}
+  --p-peso-titulo: 700;
 
-.hero--mesas { color: #ffffff; background: #001f42; }
-.hero--mesas :focus-visible { outline-color: #fdc300; }
-.hero--mesas .migas { color: #c9d8ea; }
-.hero--mesas .hero__rotulo { color: #001f42; background: #fdc300; font-family: var(--f-titulos); }
-.hero--mesas h1 { font-weight: 700; }
-.hero--mesas .hero__bajada { color: #c9d8ea; }
-.hero--mesas .hero__cifra { margin-top: var(--sp-6); font-family: var(--f-titulos); font-size: var(--fs-4xl); font-weight: 800; line-height: 1; color: #fdc300; }
-.hero--mesas .hero__cifra-texto { color: #c9d8ea; }
-.hero--mesas .hero__datos > div { background: rgb(255 255 255 / 0.08); }
-.hero--mesas .hero__datos dt { color: #fdc300; }
-
-.tickets { display: flex; flex-direction: column; gap: var(--sp-3); }
-.ticket {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  gap: var(--sp-2);
-  padding: var(--sp-4) var(--sp-5);
-  color: #1a1d29;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 8px 30px rgb(0 0 0 / 0.25);
+  /* Paleta de la ficha viva (ficha-viva.css) */
+  --v-primario: #222256;
+  --v-medio: #003b70;
+  --v-claro: #01abb7;
+  --v-acento: #d7cb03;
+  --v-sobre-acento: #222256;
+  --v-sobre-acento-suave: #4a4500;
+  --v-oscuro: #14143a;
+  --v-sobre-claro: #14143a;
+  --v-fondo: #f6f7fa;
+  --v-superficie: #ffffff;
+  --v-superficie-2: #eef0f6;
+  --v-borde: #e5e7ef;
+  --v-texto: #14152e;
+  --v-suave: #5a5f7a;
+  --v-tenue: #9aa0b8;
+  --v-tinte: #e0f6f7;
+  --v-tinte-suave: rgb(1 171 183 / 0.08);
+  --v-sobre-primario-suave: #c8cae6;
+  --v-sombra-color: rgb(34 34 86 / 0.07);
+  --v-sombra-color-2: rgb(34 34 86 / 0.09);
+  --v-sombra-color-3: rgb(34 34 86 / 0.14);
 }
-.ticket--1 { margin-left: 1.75rem; }
-.ticket--2 { margin-left: 0.5rem; }
-.ticket--3 { margin-left: 2.5rem; }
-.ticket__num { font-family: var(--f-mono); font-size: var(--fs-sm); color: #6b7280; }
-.ticket__estado { padding: 0.15rem 0.6rem; font-size: var(--fs-xs); font-weight: 700; border-radius: 999px; }
-.ticket__estado.e1 { color: #8a5a12; background: #fdf5e6; }
-.ticket__estado.e2 { color: #00336a; background: #e6f6fd; }
-.ticket__estado.e3 { color: #1e8e5a; background: #e7f6ee; }
-.ticket__estado.e4 { color: #4b5563; background: #f1f2f4; }
-.ticket__linea { grid-column: 1 / -1; height: 0.6rem; width: 75%; border-radius: 4px; background: #e6e8ec; }
-.ticket__linea.corta { width: 45%; background: #f1f2f4; }

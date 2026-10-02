@@ -1,7 +1,10 @@
-/* Tema ReservaLab — tomado de siguelab-front (src/styles.scss y
-   layout/sidebar): base casi toda gris y blanca, color reservado para
-   acciones, foco y estados; riel lateral flotante azul medianoche con el
-   enlace activo "mordiendo" el borde; fuente del sistema y radios sutiles. */
+/* Tema ReservaLab — tomado de siguelab-front (src/styles.scss): base gris y
+   blanca (#f3f4f9, bordes #e4e4e7, texto #0a0a0a), color reservado para
+   acciones y estados (azul medianoche #00336a, azul #004f9f, cerúleo #009fe3
+   y dorado #fdc300) y radios de 16 px.
+
+   Los componentes compartidos (héroe, tarjetas, rueda, recorrido…) están en
+   ../ficha-viva.css; aquí van la paleta y las pantallas de la app. */
 
 .tema-reservalab {
   --p-fondo: #f3f4f9;
@@ -10,92 +13,118 @@
   --p-texto: #0a0a0a;
   --p-suave: #52525b;
   --p-titulo: #0a0a0a;
-  --p-primario: #004f9f;
+  --p-primario: #00336a;
   --p-sobre-primario: #ffffff;
-  --p-acento: #004f9f;
-  --p-sobre-acento: #ffffff;
+  --p-acento: #fdc300;
+  --p-sobre-acento: #001f42;
   --p-oscuro: #0a0a0a;
   --p-oscuro-2: #18181b;
   --p-etiqueta-oscuro: #fdc300;
   --p-suave-oscuro: #a1a1aa;
-  --p-num: #71717a;
+  --p-num: #004f9f;
   --p-borde: #e4e4e7;
   --p-radio: 16px;
-  --p-radio-chip: 100px;
+  --p-radio-chip: 10px;
   --p-radio-capa: 12px;
   --p-fuente: var(--f-cuerpo);
-  --p-fuente-titulos: var(--f-cuerpo);
+  --p-fuente-titulos: var(--f-titulos);
   --p-peso-titulo: 700;
+
+  --v-primario: #00336a;
+  --v-medio: #004f9f;
+  --v-claro: #009fe3;
+  --v-acento: #fdc300;
+  --v-sobre-acento: #001f42;
+  --v-sobre-acento-suave: #4a3a00;
+  --v-oscuro: #001f42;
+  --v-fondo: #f3f4f9;
+  --v-superficie: #ffffff;
+  --v-superficie-2: #f4f4f5;
+  --v-borde: #e4e4e7;
+  --v-texto: #0a0a0a;
+  --v-suave: #52525b;
+  --v-tenue: #a1a1aa;
+  --v-tinte: #eef4fb;
+  --v-sombra-color: rgb(0 0 0 / 0.05);
+  --v-sombra: 0 1px 2px rgb(0 0 0 / 0.04), 0 6px 18px rgb(0 0 0 / 0.05);
 }
 
-.tema-reservalab .ficha__cuerpo { padding-top: var(--sp-5); }
-.tema-reservalab .sec {
-  margin-bottom: var(--sp-5);
-  padding: var(--sp-6);
-  background: #ffffff;
-  border: 1px solid #e4e4e7;
-  border-radius: 16px;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
-}
-.tema-reservalab .sec__num { font-weight: 600; font-size: var(--fs-xs); }
-.tema-reservalab .sec__titulo { margin-top: var(--sp-1); font-size: var(--fs-xl); letter-spacing: -0.03em; }
-
-/* Encabezado como tarjeta dentro del área de contenido */
-.hero--reservalab { overflow: visible; margin-bottom: var(--sp-5); color: #0a0a0a; }
-.hero--reservalab .migas { color: #71717a; }
-.hero--reservalab .migas ol { margin-bottom: var(--sp-4); }
-.hero__tarjeta {
-  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--sp-5);
-  padding: var(--sp-6);
-  background: #ffffff;
-  border: 1px solid #e4e4e7;
-  border-radius: 16px;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
-}
-.hero--reservalab h1 { margin-top: var(--sp-4); font-size: clamp(2.5rem, 1.8rem + 2.6vw, 3.5rem); font-weight: 700; letter-spacing: -0.045em; }
-.hero--reservalab .hero__bajada { margin-top: var(--sp-3); color: #3f3f46; font-size: var(--fs-md); }
-.hero__chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+/* Héroe */
+.hero--reservalab { background: #ffffff; border-bottom: 1px solid #e4e4e7; }
+.hero--reservalab h1 { letter-spacing: -0.045em; }
+.hero__chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-4); }
 .chip-estado, .chip-gris { padding: var(--sp-1) var(--sp-3); font-size: var(--fs-xs); font-weight: 600; border-radius: 8px; }
-.chip-estado { color: #7a5b00; background: #fffbeb; border: 1px solid #fde68a; }
+.chip-estado { color: #00336a; background: #eef4fb; border: 1px solid #c9d8ea; }
 .chip-gris { color: #3f3f46; background: #f4f4f5; }
-.hero--reservalab .hero__datos > div { background: #fafafa; border: 1px solid #e4e4e7; }
-.hero--reservalab .hero__datos dt { color: #71717a; font-weight: 600; letter-spacing: 0.04em; }
-.hero--reservalab .hero__botones { margin-top: 0; }
-.hero--reservalab .boton { min-height: 2.75rem; border-radius: 10px; font-weight: 600; }
-.hero--reservalab .boton--secundario { color: #0a0a0a; background: #ffffff; border: 1px solid #d4d4d8; }
-.metricas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); margin-top: var(--sp-5); }
-.metricas > div { display: flex; flex-direction: column; padding: var(--sp-5); background: #ffffff; border: 1px solid #e4e4e7; border-radius: 14px; }
-.metricas dt { font-size: var(--fs-sm); color: #71717a; }
-.metricas dd { order: -1; margin: 0 0 var(--sp-1); font-size: var(--fs-3xl); font-weight: 700; letter-spacing: -0.03em; }
 
-/* Componentes neutros: el color solo en acciones y estados */
-.tema-reservalab .capa { color: #0a0a0a; background: #ffffff; border: 1px solid #e4e4e7; }
-.tema-reservalab .capa--2 { background: #eef4fb; border-color: #004f9f; }
-.tema-reservalab .capa__rol { color: #71717a; font-weight: 600; letter-spacing: 0.04em; }
-.tema-reservalab .capa--2 .capa__rol { color: #004f9f; }
-.tema-reservalab .capas__flecha { color: #a1a1aa; }
-.tema-reservalab .chip--primario { color: #00336a; background: #eef4fb; border-color: transparent; }
-.tema-reservalab .chip--oscuro, .tema-reservalab .chip--acento { color: #0a0a0a; background: #ffffff; border-color: #e4e4e7; }
-.tema-reservalab .chip--suave { color: #00336a; background: #eef4fb; border-color: transparent; }
-.tema-reservalab .grupo-tec { background: #fafafa; border: 1px solid #e4e4e7; }
+/* Pantalla del estudiante: calendario del mes */
+.rl-cal { padding: var(--sp-3); background: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; }
+.rl-cal__cab, .rl-cal__dias { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.rl-cal__cab span { padding-bottom: 4px; font-size: 0.625rem; font-weight: 700; color: #a1a1aa; text-align: center; }
+.rl-cal__dias span { position: relative; display: flex; flex-direction: column; gap: 3px; height: 2.1rem; padding: 3px 4px; background: #fafafa; border: 1px solid #f1f1f3; border-radius: 6px; animation: rl-entra 0.35s ease both; animation-delay: calc(var(--i) * 18ms); }
+.rl-cal__dias small { font-size: 0.5625rem; color: #a1a1aa; }
+.rl-cal__dias i { display: block; height: 6px; border-radius: 3px; }
+.rl-cal__dia--clase i { background: #a1a1aa; }
+.rl-cal__dia--ok i { background: #004f9f; }
+.rl-cal__dia--pend i { background: #fdc300; }
+.rl-cal__ley { display: flex; gap: var(--sp-3); margin-top: var(--sp-2); }
+.rl-cal__ley em { display: inline-flex; align-items: center; gap: 4px; font-size: 0.625rem; font-style: normal; color: #52525b; }
+.rl-cal__ley em::before { content: ""; width: 0.6rem; height: 0.35rem; border-radius: 2px; }
+.rl-cal__ley .clase::before { background: #a1a1aa; }
+.rl-cal__ley .ok::before { background: #004f9f; }
+.rl-cal__ley .pend::before { background: #fdc300; }
 
-/* Riel lateral */
-@media (min-width: 64rem) {
-  .tema-reservalab .con-indice { grid-template-columns: 15.5rem minmax(0, 1fr); gap: var(--sp-6); }
-  .tema-reservalab .indice {
-    min-height: 34rem;
-    padding: var(--sp-5) 0;
-    background: #00336a;
-    border-radius: 15px;
-  }
-  .tema-reservalab .indice summary { padding: 0 var(--sp-5); color: rgb(255 255 255 / 0.85); font-family: var(--f-cuerpo); font-weight: 600; letter-spacing: 0.04em; }
-  .tema-reservalab .indice ol { gap: var(--sp-2); margin-top: var(--sp-3); }
-  .tema-reservalab .indice a { margin: 0 var(--sp-3); padding: 0 var(--sp-4); color: rgb(255 255 255 / 0.88); border-radius: 10px; font-weight: 500; }
-  .tema-reservalab .indice a:hover { color: #ffffff; background: rgb(255 255 255 / 0.1); }
-  .tema-reservalab .indice a[aria-current="true"] { margin-right: 0; color: #00336a; background: #f3f4f9; border-radius: 10px 0 0 10px; font-weight: 600; }
-  .tema-reservalab .indice__marca { display: none; }
-}
+/* Pantalla del docente: cadena de firmas */
+.rl-firmas { display: flex; flex-direction: column; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
+.rl-firmas li { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3); background: #ffffff; border: 1px solid #e4e4e7; border-radius: 10px; max-width: none; animation: rl-entra 0.4s ease both; animation-delay: calc(var(--i) * 90ms); }
+.rl-firmas li > div { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.rl-firma { padding: 0.15rem 0.55rem; font-size: 0.6875rem; font-weight: 700; border-radius: 999px; }
+.rl-firma--ok { color: #15803d; background: #ecfdf3; }
+.rl-firma--pend { color: #a16207; background: #fffbeb; }
+.rl-firma--espera { color: #a1a1aa; background: #f4f4f5; }
+.rl-firma__flecha { font-size: 0.75rem; color: #a1a1aa; }
 
+/* Pantalla del laboratorista: bitácora y exportación */
+.rl-bita { display: flex; flex-direction: column; gap: var(--sp-2); }
+.rl-bita > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3); background: #ffffff; border: 1px solid #e4e4e7; border-radius: 10px; animation: rl-entra 0.4s ease both; animation-delay: calc(var(--i) * 90ms); }
+.rl-bita span { font-size: 0.75rem; font-weight: 700; color: #00336a; }
+.rl-bita em { font-size: 0.6875rem; font-style: normal; color: #52525b; }
+.rl-excel { display: inline-flex; align-self: start; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); font-size: 0.75rem; font-weight: 700; color: #ffffff; background: #15803d; border-radius: 8px; }
+.rl-excel svg { width: 1rem; height: 1rem; }
+@keyframes rl-entra { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .rl-cal__dias span, .rl-firmas li, .rl-bita > div { animation: none; } }
+
+/* Diagrama de capas con cuatro piezas */
+.tema-reservalab .capas { flex-wrap: nowrap; }
+.tema-reservalab .capa { flex: 1 1 0; min-width: 0; padding: var(--sp-4); }
+.tema-reservalab .capa__nombre { font-size: var(--fs-md); }
+@media (max-width: 56rem) { .tema-reservalab .capas { flex-wrap: wrap; } }
+
+/* Gestión ágil: requerimientos, MoSCoW y sprints */
+.reqs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); margin: var(--sp-5) 0 0; }
+.reqs > div { display: flex; flex-direction: column-reverse; padding: var(--sp-4); background: #ffffff; border: 1px solid #e4e4e7; border-radius: 12px; }
+.reqs dd { margin: 0; font-family: var(--f-titulos); font-size: var(--fs-2xl); font-weight: 800; color: #00336a; }
+.reqs dt { font-size: var(--fs-sm); color: #52525b; }
+.moscow { margin-top: var(--sp-5); padding: var(--sp-5); background: #ffffff; border: 1px solid #e4e4e7; border-radius: 16px; }
+.moscow__titulo { font-weight: 700; color: #0a0a0a; }
+.moscow__barra { display: flex; gap: 3px; height: 2.25rem; margin-top: var(--sp-3); overflow: hidden; border-radius: 10px; }
+.moscow__tramo { display: flex; align-items: center; justify-content: center; font-size: var(--fs-sm); color: #ffffff; }
+.moscow__tramo--0 { background: #00336a; }
+.moscow__tramo--1 { background: #009fe3; }
+.moscow__tramo--2 { color: #001f42; background: #fdc300; }
+.moscow__ley { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin: var(--sp-3) 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); color: #52525b; }
+.moscow__ley li { display: inline-flex; align-items: center; gap: var(--sp-2); max-width: none; }
+.moscow__ley i { width: 0.8rem; height: 0.8rem; border-radius: 3px; }
+.sprints-v { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); margin: var(--sp-5) 0 0; padding: 0; list-style: none; }
+.sprints-v li { position: relative; display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-4); background: #ffffff; border: 1px solid #e4e4e7; border-top: 4px solid #004f9f; border-radius: 12px; max-width: none; }
+.sprints-v li:nth-child(-n+2) { border-top-color: #a1a1aa; }
+.sprints-v li:last-child { border-top-color: #fdc300; }
+.sprints-v__num { font-family: var(--f-mono); font-size: 0.6875rem; color: #a1a1aa; }
+.sprints-v b { font-family: var(--f-titulos); color: #00336a; }
+.sprints-v p { font-size: var(--fs-sm); line-height: 1.45; color: #3f3f46; }
+.sprints-v small { margin-top: auto; padding-top: var(--sp-1); font-family: var(--f-mono); font-size: 0.6875rem; color: #71717a; }
 @media (max-width: 56rem) {
-  .metricas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reqs { grid-template-columns: minmax(0, 1fr); }
+  .sprints-v { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 30rem) { .sprints-v { grid-template-columns: minmax(0, 1fr); } }

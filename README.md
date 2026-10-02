@@ -28,9 +28,14 @@ los rallies, decoraciones de la Plataforma de Nómina…).
 ├── proyectos/                Una página por frente; solo cambia ID_PROYECTO y el tema
 │   ├── micrositios.html      ├── rally-living-lab.html   ├── mesas-ayuda.html
 │   ├── camina.html           ├── reservalab.html
-│   └── rally-neotomasino.html└── nomina.html
+│   ├── rally-neotomasino.html├── nomina.html
+│   ├── gestion-docente.html
+│   ├── nomina-dashboard.html Fichas hijas de nomina.html (campo "padre" en data/proyectos.js):
+│   └── nomina-novedades.html no cuentan como frente aparte en portada, Gantt ni conclusiones
 ├── assets/
 │   ├── css/estilos.css       Marco común y componentes (variables --p-* por ficha)
+│   ├── css/ficha-viva.css    Formato "página de producto" (rueda, tarjetas que giran, recorrido…);
+│   │                         lo usan Gestión Docente y Mesas de ayuda con body class "ficha-viva"
 │   ├── css/temas/*.css       Un tema por proyecto: paleta, tipografía y héroe
 │   ├── js/app.js             Render de datos, navegación e interacciones
 │   ├── fonts/                Poppins y Nunito autoalojadas (OFL)

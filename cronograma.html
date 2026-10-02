@@ -7,9 +7,11 @@
   <meta name="description" content="Cronograma de la pasantía: avance de horas, resumen mensual, actividades semanales y diagrama de Gantt de los proyectos.">
   <link rel="icon" href="./assets/img/marcas/usta-escudo.webp" type="image/webp">
   <link rel="stylesheet" href="./assets/css/estilos.css">
+  <link rel="stylesheet" href="./assets/css/ficha-viva.css">
+  <link rel="stylesheet" href="./assets/css/temas/cronograma.css">
   <script>document.documentElement.className += ' js';</script>
 </head>
-<body data-pagina="cronograma" data-seccion="cronograma" data-raiz="./">
+<body class="pagina-crono ficha-viva" data-pagina="cronograma" data-seccion="cronograma" data-raiz="./">
   <a class="salto" href="#contenido">Saltar al contenido</a>
 
   <header class="barra">
@@ -33,19 +35,12 @@
     </div>
   </header>
 
-  <main id="contenido" tabindex="-1">
-    <header class="cabecera-oscura">
-      <div class="cabecera-oscura__aro" aria-hidden="true"></div>
-      <div class="contenedor">
-        <p class="antetitulo">Dedicación horaria</p>
-        <h1>Cronograma</h1>
-        <div id="crono-cabecera"></div>
-      </div>
-    </header>
+  <main id="contenido" class="ficha" tabindex="-1">
+    <header class="hero hero--crono" id="crono-hero"></header>
     <noscript><div class="contenedor"><p class="aviso">Este informe usa JavaScript para mostrar los datos. Actívalo para ver el contenido completo.</p></div></noscript>
-    <div class="contenedor">
-      <div id="cronograma"></div>
-      <div id="gantt"></div>
+    <div class="contenedor ficha__cuerpo con-indice">
+      <aside class="indice-caja" aria-label="Secciones del cronograma"></aside>
+      <div class="con-indice__cuerpo" id="cronograma"></div>
     </div>
   </main>
 

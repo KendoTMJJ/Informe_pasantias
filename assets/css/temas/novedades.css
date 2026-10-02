@@ -1,0 +1,113 @@
+/* Tema Novedades de Nómina — tomado de nomina-front-end (src/styles.scss):
+   paleta "Portales institucionales" (azul medianoche #00336a, azul #004f9f,
+   cerúleo #009fe3 y dorado), fondo #f6f7f9, tarjetas blancas de 14 px,
+   Poppins y las decoraciones de esquina de la pantalla de inicio de la
+   plataforma. El dashboard hermano usa temas/nomina.css.
+
+   Los componentes compartidos (héroe, tarjetas, rueda, recorrido…) están en
+   ../ficha-viva.css; aquí van la paleta, las decoraciones y las pantallas. */
+
+.tema-novedades {
+  --p-fondo: #f6f7f9;
+  --p-superficie: #ffffff;
+  --p-superficie-2: #eef3fa;
+  --p-texto: #1a1d29;
+  --p-suave: #6b7280;
+  --p-titulo: #00336a;
+  --p-primario: #00336a;
+  --p-sobre-primario: #ffffff;
+  --p-acento: #fdc300;
+  --p-sobre-acento: #001f42;
+  --p-oscuro: #00336a;
+  --p-oscuro-2: #001f42;
+  --p-etiqueta-oscuro: #fdc300;
+  --p-suave-oscuro: #c9d8ea;
+  --p-num: #004f9f;
+  --p-borde: #e6e8ec;
+  --p-radio: 14px;
+  --p-radio-chip: 999px;
+  --p-radio-capa: 14px;
+  --p-fuente: var(--f-titulos);
+  --p-fuente-titulos: var(--f-titulos);
+  --p-peso-titulo: 700;
+
+  /* Paleta de la ficha viva (ficha-viva.css) */
+  --v-primario: #00336a;
+  --v-medio: #004f9f;
+  --v-claro: #009fe3;
+  --v-acento: #fdc300;
+  --v-sobre-acento: #001f42;
+  --v-sobre-acento-suave: #4a3a00;
+  --v-oscuro: #001f42;
+  --v-sobre-claro: #001f42;
+  --v-fondo: #f6f7f9;
+  --v-superficie: #ffffff;
+  --v-superficie-2: #eef3fa;
+  --v-borde: #e6e8ec;
+  --v-texto: #1a1d29;
+  --v-suave: #6b7280;
+  --v-tenue: #9aa3b0;
+  --v-tinte: #e6f6fd;
+  --v-sombra-color: rgb(16 24 40 / 0.06);
+  --v-sombra-color-2: rgb(16 24 40 / 0.08);
+  --v-sombra-color-3: rgb(16 24 40 / 0.12);
+  --v-sombra: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px rgb(16 24 40 / 0.06);
+}
+
+/* Héroe: franja degradada y decoraciones de esquina de la plataforma */
+.hero--novedades { background: #ffffff; }
+.hero--novedades::before {
+  content: ""; position: absolute; inset: 0 0 auto; z-index: 2; height: 5px;
+  background: linear-gradient(90deg, #00336a 0%, #009fe3 55%, #fdc300 100%);
+}
+.hero--novedades .hero__deco { position: absolute; z-index: 0; pointer-events: none; user-select: none; opacity: 0.22; }
+.hero--novedades .hero__deco--izq { top: 0; left: 0; height: 34%; width: auto; }
+.hero--novedades .hero__deco--der { bottom: 0; right: 0; height: 42%; width: auto; }
+.hero--novedades .hero__interior { z-index: 1; }
+
+/* Pantalla de la administración: carga del PDF y lista de nóminas */
+.nv-carga { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3); background: #ffffff; border: 1.5px dashed #9ec5ea; border-radius: 12px; }
+.nv-carga__icono { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; color: #004f9f; background: #e6f6fd; border-radius: 10px; }
+.nv-carga__icono svg { width: 1.3rem; height: 1.3rem; }
+.nv-carga div { flex: 1; min-width: 0; }
+.nv-carga b { display: block; font-size: var(--fs-sm); color: #1a1d29; }
+.nv-carga small { font-size: 0.6875rem; color: #6b7280; }
+.nv-carga__boton { padding: var(--sp-2) var(--sp-3); font-size: 0.75rem; font-weight: 700; color: #ffffff; background: #00336a; border-radius: 8px; white-space: nowrap; }
+.nv-lista { display: flex; flex-direction: column; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
+.nv-lista li { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3); background: #ffffff; border: 1px solid #e6e8ec; border-radius: 10px; max-width: none; animation: nv-entra 0.4s ease both; animation-delay: calc(var(--i) * 80ms); }
+.nv-lista .esqueleto { flex: 1; }
+.nv-lista__prog { flex-shrink: 0; width: 1.6rem; height: 1.6rem; background: #c9d8ea; border-radius: 6px; }
+.nv-lista__avatar { flex-shrink: 0; width: 1.6rem; height: 1.6rem; background: #fdc300; border-radius: 50%; }
+.nv-estado { padding: 0.2rem 0.6rem; font-size: 0.6875rem; font-weight: 700; border-radius: 999px; white-space: nowrap; }
+.nv-estado--cargada { color: #4b5563; background: #f1f2f4; }
+.nv-estado--validacion { color: #b7791f; background: #fdf5e6; }
+.nv-estado--cerrada { color: #1e8e5a; background: #e7f6ee; }
+
+/* Pantalla del directivo: plazo y meses de pago */
+.nv-plazo { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--sp-1) var(--sp-3); padding: var(--sp-3) var(--sp-4); color: #ffffff; background: #00336a; border-radius: 12px; }
+.nv-plazo b { font-size: var(--fs-sm); }
+.nv-plazo span { grid-column: 1; font-size: 0.6875rem; color: #c9d8ea; }
+.nv-plazo__dias { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: 4px; font-style: normal; }
+.nv-plazo__dias em { display: flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; font-size: 0.6875rem; font-style: normal; font-weight: 700; color: #c9d8ea; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 6px; }
+.nv-plazo__dias em.hecho { color: #001f42; background: #fdc300; border-color: #fdc300; }
+.nv-meses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-2); }
+.nv-mes { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3); background: #ffffff; border: 1px solid #e6e8ec; border-top: 4px solid #b7791f; border-radius: 12px; animation: nv-entra 0.4s ease both; animation-delay: calc(var(--i) * 90ms); }
+.nv-mes--ok { border-top-color: #1e8e5a; }
+.nv-mes small { font-size: 0.625rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; }
+.nv-mes b { font-size: var(--fs-sm); color: #00336a; }
+.nv-mes > span { font-size: 0.6875rem; font-weight: 700; color: #b7791f; }
+.nv-mes--ok > span { color: #1e8e5a; }
+@keyframes nv-entra { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .nv-lista li, .nv-mes { animation: none; } }
+
+/* Diagrama de capas con cuatro piezas */
+.tema-novedades .capa--4 { color: var(--p-texto); background: var(--p-superficie); border: var(--linea-2) dashed var(--v-claro); }
+.tema-novedades .capa--4 .capa__rol { color: var(--v-claro); }
+
+@media (max-width: 48rem) {
+  .hero--novedades .hero__deco { opacity: 0.25; }
+}
+.tema-novedades .capas { flex-wrap: nowrap; }
+.tema-novedades .capa { flex: 1 1 0; min-width: 0; padding: var(--sp-4); }
+.tema-novedades .capa__nombre { font-size: var(--fs-md); }
+@media (max-width: 56rem) { .tema-novedades .capas { flex-wrap: wrap; } }
